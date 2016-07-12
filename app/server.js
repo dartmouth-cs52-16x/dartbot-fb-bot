@@ -99,29 +99,27 @@ controller.hears(['I\'m hungry'], ['direct_message', 'direct_mention', 'mention'
       const foodType = response.text;
       convo.ask('And where are you located?', (response, convo) => {
         const foodLoc = response.text;
-        convo.ask('Okay I\'m looking...', (response, convo) => {
-          yelp.search({ term: foodType, location: foodLoc })
-          .then((data) => {
-            if (data == undefined || data.total == 0) {
-              convo.say('Sorry I couldn\'t find anything. :( ');
-            } else {
-              const result = data.businesses[0];
-              const restaurant = {
-                'text': `Here\'s what I found (Yelp rated it ${result.rating} stars):`,
-                'attachments': [{
-                  'title': result.name,
-                  'text': result.snippet_text,
-                  'title_link': result.url,
-                  'image_url': result.image_url,
-                }],
-              };
-              convo.say(restaurant);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-          convo.next();
+        convo.say('Okay I\'m looking...');
+        yelp.search({ term: foodType, location: foodLoc })
+        .then((data) => {
+          if (data == undefined || data.total == 0) {
+            convo.say('Sorry I couldn\'t find anything. :( ');
+          } else {
+            const result = data.businesses[0];
+            const restaurant = {
+              'text': `Here\'s what I found (Yelp rated it ${result.rating} stars):`,
+              'attachments': [{
+                'title': result.name,
+                'text': result.snippet_text,
+                'title_link': result.url,
+                'image_url': result.image_url,
+              }],
+            };
+            convo.say(restaurant);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
         convo.next();
       });
@@ -180,7 +178,7 @@ controller.hears('help', ['direct_message', 'direct_mention', 'mention'], (bot, 
     'I\'m hungry : restaurant query\n' +
     'alma_bot wake up! (if I\'m asleep): a woken up message\n' +
     'I\'m bored: a conversation and joke\n' +
-    'weather: a zipcode based weather update!' +
+    'weather: a zipcode based weather update!\n' +
     'lit: react with an emoji';
   bot.reply(message, helpMessage);
 });
