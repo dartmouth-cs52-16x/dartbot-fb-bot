@@ -1,7 +1,7 @@
-import $ from 'jquery';
+import axios from 'axios';
 import Yelp from 'yelp';
 import botkit from 'botkit';
-import mongoStorage from 'botkit-storage-mongo';
+//import mongoStorage from 'botkit-storage-mongo';
 
 // this is es6 syntax for importing libraries
 // in older js this would be: var botkit = require('botkit')
@@ -11,7 +11,7 @@ console.log('starting bot');
 // botkit controller
 const controller = botkit.slackbot({
   debug: false,
-//  storage: mongoStorage = new mongoStorage(process.env.MONGODB_URI),
+//  storage: mongoStorage = new mongoStorage({monogUri: process.env.MONGODB_URI}),
 });
 
 // initialize slackbot
@@ -147,32 +147,30 @@ controller.hears(['I\'m hungry'], ['direct_message', 'direct_mention', 'mention'
     ]);
   });
 });
-
-/*controller.hears('weather', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
-  function findWeather(zip) {
-    const baseUrl = 'http://api.wunderground.com/api/';
-    $.ajax([{
-      url: `${baseUrl}${process.env.WEATHER_UNDERGROUND_KEY}/forecast/q/${zip}/json`,
-      success: (data) => {
-        return data.forecast[0];
-      },
-    }]);
-  }
+controller.hears('weather', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
   bot.startConversation(message, (response, convo) => {
     convo.ask('What zipcode do you want me to find the weather for?', (response, convo) => {
-      const forecast = findWeather(response);
-      const weatherUpdate = {
-        'attachements': [{
-          'title': forecast.title,
-          'text': forecast.fcttext,
-          'thumb_url': forecast.icon_url,
-        }],
-      };
-      convo.say(weatherUpdate);
+      convo.say(`https://weather.com/weather/today/l/${response.text}`);
+      axios(`http://api.wunderground.com/api/${process.env.WEATHER_UNDERGROUND_KEY}/forecast/q/${response.text}.json`)
+      .then((data) => {
+        const forecast = data.forecast.txt_forecast.forecastday[0];
+        convo.say(forecast.title);
+        const weatherUpdate = {
+          'text': 'Here\'s a weather update:',
+          'attachments': [{
+            'title': forecast.title,
+            'text': forecast.fcttext,
+            'thumb_url': forecast.icon_url,
+          }],
+        };
+        convo.say(weatherUpdate);
+      }).catch((err) => {
+        console.log(err);
+      });
       convo.next();
     });
   });
-});*/
+});
 
 // help response
 controller.hears('help', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
@@ -180,7 +178,8 @@ controller.hears('help', ['direct_message', 'direct_mention', 'mention'], (bot, 
     'I love you:  a cute picture\n' +
     'I\'m hungry : restaurant query\n' +
     'alma_bot wake up! (if I\'m asleep): a woken up message' +
-    'I\'m bored: a conversation and joke';
+    'I\'m bored: a conversation and joke' +
+    'weather: a zipcode based weather update!';
   bot.reply(message, helpMessage);
 });
 
