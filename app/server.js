@@ -11,7 +11,7 @@ console.log('starting bot');
 // botkit controller
 const controller = botkit.slackbot({
   debug: false,
-  storage: mongoStorage = new mongoStorage(process.env.MONGODB_URI),
+//  storage: mongoStorage = new mongoStorage(process.env.MONGODB_URI),
 });
 
 // initialize slackbot
