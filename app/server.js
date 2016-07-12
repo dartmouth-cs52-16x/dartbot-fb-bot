@@ -127,7 +127,6 @@ controller.hears(['I\'m hungry'], ['direct_message', 'direct_mention', 'mention'
       });
       convo.next();
     });
-    convo.next();
   }
 
   bot.startConversation(message, (response, convo) => {
