@@ -150,8 +150,8 @@ controller.hears(['I\'m hungry'], ['direct_message', 'direct_mention', 'mention'
 controller.hears('weather', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
   bot.startConversation(message, (response, convo) => {
     convo.ask('What zipcode do you want me to find the weather for?', (response, convo) => {
-      convo.say(`https://weather.com/weather/today/l/${response.text}`);
-      axios(`http://api.wunderground.com/api/${process.env.WEATHER_UNDERGROUND_KEY}/forecast/q/${response.text}.json`)
+      convo.say(`Here's weather information:\n https://weather.com/weather/today/l/${response.text}`);
+      /*axios(`http://api.wunderground.com/api/${process.env.WEATHER_UNDERGROUND_KEY}/forecast/q/${response.text}.json`)
       .then((data) => {
         const forecast = data.forecast.txt_forecast.forecastday[0];
         convo.say(forecast.title);
@@ -166,7 +166,7 @@ controller.hears('weather', ['direct_message', 'direct_mention', 'mention'], (bo
         convo.say(weatherUpdate);
       }).catch((err) => {
         console.log(err);
-      });
+      });*/
       convo.next();
     });
   });
@@ -177,8 +177,8 @@ controller.hears('help', ['direct_message', 'direct_mention', 'mention'], (bot, 
   const helpMessage = 'I can reply Hello and respond to: \n' +
     'I love you:  a cute picture\n' +
     'I\'m hungry : restaurant query\n' +
-    'alma_bot wake up! (if I\'m asleep): a woken up message' +
-    'I\'m bored: a conversation and joke' +
+    'alma_bot wake up! (if I\'m asleep): a woken up message\n' +
+    'I\'m bored: a conversation and joke\n' +
     'weather: a zipcode based weather update!';
   bot.reply(message, helpMessage);
 });
