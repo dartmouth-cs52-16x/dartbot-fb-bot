@@ -195,6 +195,10 @@ controller.hears('I love you', ['direct_message', 'direct_mention', 'mention'], 
   bot.reply(message, loveAttachement);
 });
 
+controller.hears('lit', ['direct_message', 'message', 'direct_mention', 'mention', 'ambient'], (bot, message) => {
+  bot.api.reactions.add({ channel: message.channel, timestamp: message.ts, name: 'fire' }, (res, err) => {});
+});
+
 controller.on(['direct_message', 'direct_mention', 'mention'], (bot, message) => {
   bot.reply(message, 'What are you even talking about?');
 });
