@@ -2,7 +2,6 @@ import $ from 'jquery';
 import Yelp from 'yelp';
 import botkit from 'botkit';
 import mongoStorage from 'botkit-storage-mongo';
-mongoStorage({ mongoUri: '...' });
 
 // this is es6 syntax for importing libraries
 // in older js this would be: var botkit = require('botkit')
@@ -12,7 +11,7 @@ console.log('starting bot');
 // botkit controller
 const controller = botkit.slackbot({
   debug: false,
-  storage: mongoStorage,
+  storage: mongoStorage = new mongoStorage(process.env.MONGODB_URI),
 });
 
 // initialize slackbot
