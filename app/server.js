@@ -189,6 +189,7 @@ controller.hears('I love you', ['direct_message', 'direct_mention', 'mention'], 
   const loveAttachement = {
     'text': 'Love you too!',
     'attachments': [{
+      'text': '',
       'image_url': 'http://i780.photobucket.com/albums/yy82/Cute_Stuff/Cartoon/LovePuppy.gif',
     }],
   };
@@ -204,6 +205,7 @@ controller.on('outgoing_webhook', (bot, message) => {
   const sleepMessage = {
     'text': 'I promise I\'m awake',
     'attachments': [{
+      'text': '',
       'image_url': 'http://3.bp.blogspot.com/_mTqs4fBFm50/SkU02dgiw-I/AAAAAAAAAVg/2xVwIWz_9a0/s400/sleepy.gif',
     }],
   };
