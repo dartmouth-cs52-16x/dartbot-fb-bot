@@ -179,7 +179,8 @@ controller.hears('help', ['direct_message', 'direct_mention', 'mention'], (bot, 
     'I\'m hungry : restaurant query\n' +
     'alma_bot wake up! (if I\'m asleep): a woken up message\n' +
     'I\'m bored: a conversation and joke\n' +
-    'weather: a zipcode based weather update!';
+    'weather: a zipcode based weather update!' +
+    'lit: react with an emoji';
   bot.reply(message, helpMessage);
 });
 
@@ -195,14 +196,13 @@ controller.hears('I love you', ['direct_message', 'direct_mention', 'mention'], 
   bot.reply(message, loveAttachement);
 });
 
-controller.hears('lit', ['direct_message', 'message', 'direct_mention', 'mention', 'ambient'], (bot, message) => {
+controller.hears('lit', ['direct_message', 'direct_mention', 'mention', 'ambient'], (bot, message) => {
   bot.api.reactions.add({ channel: message.channel, timestamp: message.ts, name: 'fire' }, (res, err) => {});
 });
 
 controller.on(['direct_message', 'direct_mention', 'mention'], (bot, message) => {
   bot.reply(message, 'What are you even talking about?');
 });
-
 
 controller.on('outgoing_webhook', (bot, message) => {
   const sleepMessage = {
