@@ -1,12 +1,18 @@
-// example bot
+import $ from 'jquery';
+import Yelp from 'yelp';
 import botkit from 'botkit';
+import mongoStorage from 'botkit-storage-mongo';
+mongoStorage({ mongoUri: '...' });
+
 // this is es6 syntax for importing libraries
 // in older js this would be: var botkit = require('botkit')
+
 console.log('starting bot');
 
 // botkit controller
 const controller = botkit.slackbot({
   debug: false,
+  storage: mongoStorage,
 });
 
 // initialize slackbot
@@ -26,7 +32,6 @@ controller.setupWebserver(process.env.PORT || 3001, (err, webserver) => {
   });
 });
 
-const Yelp = require('yelp');
 const yelp = new Yelp({
   consumer_key: process.env.YELP_CONSUMER_KEY,
   consumer_secret: process.env.YELP_CONSUMER_SECRET,
@@ -47,7 +52,44 @@ controller.hears(['hello', 'hi', 'howdy'], ['direct_message', 'direct_mention', 
 
 // I'm Bored conversation
 controller.hears(['I\'m bored'], ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
-
+  function joke1(response, convo) {
+    convo.ask('How many programmers does it take to change a lightbulb', (response, convo) => {
+      convo.say('None, that\'s a hardware problem');
+      joke2(response, convo);
+      convo.next();
+    });
+  }
+  function joke2(response, convo) {
+    convo.ask('What did you think about that joke?', (response, convo) => {
+      convo.say(`${response.text}? Okay how about this one:`);
+      convo.ask('Why do java programmers wear glasses?', (response, convo) => {
+        convo.say('Because they don\'t C#!');
+        convo.say('Okay that\'s all I got.');
+        convo.next();
+      });
+      convo.next();
+    });
+  }
+  bot.startConversation(message, (response, convo) => {
+    convo.ask('I have some jokes. Are you interested?', [
+      {
+        pattern: bot.utterances.yes,
+        callback: (response, convo) => {
+          convo.say('Okay I\'ll try my best');
+          joke1(response, convo);
+          convo.next();
+        },
+      },
+      {
+        default: true,
+        callback: (response, convo) => {
+          convo.say('WHAT! Too bad I\'m telling them anyway.');
+          joke1(response, convo);
+          convo.next();
+        },
+      },
+    ]);
+  });
 });
 
 // Restaurant query
@@ -107,10 +149,40 @@ controller.hears(['I\'m hungry'], ['direct_message', 'direct_mention', 'mention'
   });
 });
 
+/*controller.hears('weather', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
+  function findWeather(zip) {
+    const baseUrl = 'http://api.wunderground.com/api/';
+    $.ajax([{
+      url: `${baseUrl}${process.env.WEATHER_UNDERGROUND_KEY}/forecast/q/${zip}/json`,
+      success: (data) => {
+        return data.forecast[0];
+      },
+    }]);
+  }
+  bot.startConversation(message, (response, convo) => {
+    convo.ask('What zipcode do you want me to find the weather for?', (response, convo) => {
+      const forecast = findWeather(response);
+      const weatherUpdate = {
+        'attachements': [{
+          'title': forecast.title,
+          'text': forecast.fcttext,
+          'thumb_url': forecast.icon_url,
+        }],
+      };
+      convo.say(weatherUpdate);
+      convo.next();
+    });
+  });
+});*/
 
 // help response
 controller.hears('help', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
-  bot.reply(message, 'I can reply Hello and respond to:\n I\'m hungry : restaurant query\n I love you:  a cute picture');
+  const helpMessage = 'I can reply Hello and respond to: \n' +
+    'I love you:  a cute picture\n' +
+    'I\'m hungry : restaurant query\n' +
+    'alma_bot wake up! (if I\'m asleep): a woken up message' +
+    'I\'m bored: a conversation and joke';
+  bot.reply(message, helpMessage);
 });
 
 // attachement repsonse
@@ -118,7 +190,6 @@ controller.hears('I love you', ['direct_message', 'direct_mention', 'mention'], 
   const loveAttachement = {
     'text': 'Love you too!',
     'attachments': [{
-      'text': '',
       'image_url': 'http://i780.photobucket.com/albums/yy82/Cute_Stuff/Cartoon/LovePuppy.gif',
     }],
   };
@@ -131,8 +202,15 @@ controller.on(['direct_message', 'direct_mention', 'mention'], (bot, message) =>
 
 
 controller.on('outgoing_webhook', (bot, message) => {
-  bot.replyPublic(message, 'yeah yeah');
+  const sleepMessage = {
+    'text': 'I promise I\'m awake',
+    'attachments': [{
+      'image_url': 'http://3.bp.blogspot.com/_mTqs4fBFm50/SkU02dgiw-I/AAAAAAAAAVg/2xVwIWz_9a0/s400/sleepy.gif',
+    }],
+  };
+  bot.replyPublic(message, sleepMessage);
 });
+
 /*
 controller.on('user_typing', (bot, message) => {
   bot.reply(message, 'stop typing!');
