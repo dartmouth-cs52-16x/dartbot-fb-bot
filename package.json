@@ -1,5 +1,5 @@
 {
-  "name": "slackattack",
+  "name": "dartbot-fb-bot",
   "version": "1.0.0",
   "description": "",
   "author": "Tim Tregubov and Alma Wang",
@@ -21,6 +21,8 @@
     "botkit-storage-mongo": "^1.0.3",
     "jquery": "^3.1.0",
     "mongodb": "^1.4.40",
+    "react": "^15.3.0",
+    "redux": "^3.5.2",
     "yelp": "^1.0.1"
   },
   "devDependencies": {
