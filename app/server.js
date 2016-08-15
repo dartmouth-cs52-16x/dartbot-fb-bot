@@ -1,14 +1,14 @@
 import botkit from 'botkit';
 import dotenv from 'dotenv';
-//import { getLocations } from './api';
-//import mongoStorage from 'botkit-storage-mongo';
+// import { getLocations } from './api';
+// import mongoStorage from 'botkit-storage-mongo';
 
 // this is es6 syntax for importing libraries
 // in older js this would be: var botkit = require('botkit')
 
-const SERVER ='https://dartbot-fbbot.herokuapp.com/';//  process.env.port;
+const SERVER = 'https://dartbot-fbbot.herokuapp.com/';//  process.env.port;
 
-dotenv.config();
+dotenv.config({ silent: true });
 console.log('starting bot');
 
 // botkit controller
