@@ -21,8 +21,8 @@ const controller = botkit.facebookbot({
 // initialize slackbot
 const fbbot = controller.spawn({
 });
-console.log(process.env.port);
-controller.setupWebserver(process.env.port || 3000, (err, webserver) => {
+console.log(process.env.PORT);
+controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   controller.createWebhookEndpoints(webserver, fbbot, () => {
     console.log('HI!');
   });
