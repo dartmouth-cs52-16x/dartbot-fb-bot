@@ -22,8 +22,8 @@ const controller = botkit.facebookbot({
 const fbbot = controller.spawn({
 });
 
-controller.setupWebServer(process.env.port, (err, webserver) => {
-  controller.createWebhookEndpoints(controller.webserver, fbbot, () => {
+controller.setupWebserver(process.env.port, (err, webserver) => {
+  controller.createWebhookEndpoints(webserver, fbbot, () => {
     console.log('HI!');
   });
 });
