@@ -6,7 +6,7 @@ import { getLocations } from './api';
 // this is es6 syntax for importing libraries
 // in older js this would be: var botkit = require('botkit')
 
-const SERVER = process.env.port;
+const SERVER ='https://dartbot-fbbot.herokuapp.com/';//  process.env.port;
 
 dotenv.config();
 console.log('starting bot');
@@ -22,7 +22,7 @@ const controller = botkit.facebookbot({
 const fbbot = controller.spawn({
 });
 
-controller.setupWebServer(SERVER, (err, webserver) => {
+controller.setupWebServer(process.env.port, (err, webserver) => {
   controller.createWebhookEndpoints(controller.webserver, fbbot, () => {
     console.log('HI!');
   });
@@ -30,6 +30,6 @@ controller.setupWebServer(SERVER, (err, webserver) => {
 
 controller.on('message_received', (bot, message) => {
   if (message.attachements && message.attachements.type == 'location') {
-
+    console.log('hi');
   }
 });
