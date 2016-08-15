@@ -22,14 +22,14 @@ const controller = botkit.facebookbot({
 const fbbot = controller.spawn({
 });
 
-controller.setupWebserver(process.env.port, (err, webserver) => {
+controller.setupWebserver(process.env.port || 3000, (err, webserver) => {
   controller.createWebhookEndpoints(webserver, fbbot, () => {
     console.log('HI!');
   });
 });
 
-controller.on('message_received', (bot, message) => {
-  if (message.attachements && message.attachements.type == 'location') {
-    console.log('hi');
-  }
-});
+// controller.on('message_received', (bot, message) => {
+//   if (message.attachements && message.attachements.type == 'location') {
+//     console.log('hi');
+//   }
+// });
