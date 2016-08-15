@@ -1,6 +1,6 @@
 import botkit from 'botkit';
 import dotenv from 'dotenv';
-import { getLocations } from './api';
+//import { getLocations } from './api';
 //import mongoStorage from 'botkit-storage-mongo';
 
 // this is es6 syntax for importing libraries
