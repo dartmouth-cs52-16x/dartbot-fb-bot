@@ -37,6 +37,7 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 
 
 controller.hears(['.*'], 'message_received', (bot, message) => {
+  console.log('hello');
   const wit = witbot.process(message.text, bot, message);
   wit.hears('tour_prompt', 0.65, (wbot, wmessage, outcome) => {
     wbot.reply(wmessage, 'I heard tour!');
