@@ -37,13 +37,15 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 controller.middleware.receive.use(wit.receive);
 
 // user said hello
-// controller.hears(['hello'], 'message_received', (bot, message) => {
-//   bot.reply(message, 'Hey there.');
-// });
+controller.hears(['hello'], 'message_received', (bot, message) => {
+  bot.reply(message, 'Hey there.');
+});
 
-// controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
-//   // console.log(message.intents.outcomes.entities);
-// });
+controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
+  console.log('message was');
+  console.log(message);
+  console.log(message.intents.outcomes.entities);
+});
 //
 //
 // // this is triggered when a user clicks the send-to-messenger plugin
