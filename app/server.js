@@ -38,12 +38,12 @@ controller.middleware.receive.use(wit.receive);
 
 // user said hello
 controller.hears(['hello'], 'message_received', (bot, message) => {
+  console.log('message was');
+  console.log(message);
   bot.reply(message, 'Hey there.');
 });
 
 controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
-  console.log('message was');
-  console.log(message);
   console.log(message.intents.outcomes.entities);
 });
 //
