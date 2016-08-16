@@ -34,6 +34,17 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   });
 });
 
+controller.on('message_received', (bot, message) => {
+  console.log(message);
+  if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
+    if (message.attachments[0].payload.coordinates) {
+      console.log(message.attachments[0].payload.coordinates.lat);
+    }
+  }
+    // carefully examine and
+    // handle the message here!
+    // Note: Platforms such as Slack send many kinds of messages, not all of which contain a text field!
+});
 
 // controller.hears(['.*'], 'message_received', (bot, message) => {
 //   console.log('hello');
@@ -169,16 +180,4 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   if (message.intents[0] && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
   }
-});
-
-controller.on('message_received', (bot, message) => {
-  console.log(message);
-  if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
-    if (message.attachments[0].payload.coordinates) {
-      console.log(message.attachments[0].payload.coordinates.lat);
-    }
-  }
-    // carefully examine and
-    // handle the message here!
-    // Note: Platforms such as Slack send many kinds of messages, not all of which contain a text field!
 });
