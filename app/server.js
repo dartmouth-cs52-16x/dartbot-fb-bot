@@ -40,7 +40,8 @@ controller.hears(['.*'], 'message_received', (bot, message) => {
   console.log('hello');
   const wit = witbot.process(message.text, bot, message);
   wit.hears('tour_prompt', 0.65, (wbot, wmessage, outcome) => {
-    wbot.reply(wmessage, 'I heard tour!');
+    console.log('here');
+    bot.reply(message, 'I heard tour!');
   });
 });
 
