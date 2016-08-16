@@ -1,12 +1,11 @@
 import botkit from 'botkit';
 import dotenv from 'dotenv';
+
 // import { getLocations } from './api';
 // import mongoStorage from 'botkit-storage-mongo';
 
 // this is es6 syntax for importing libraries
 // in older js this would be: var botkit = require('botkit')
-
-const SERVER = 'https://dartbot-fbbot.herokuapp.com/';//  process.env.port;
 
 dotenv.config({ silent: true });
 console.log('starting bot');
@@ -28,8 +27,13 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   });
 });
 
-// controller.on('message_received', (bot, message) => {
-//   if (message.attachements && message.attachements.type == 'location') {
-//     console.log('hi');
-//   }
-// });
+// user said hello
+controller.hears(['hello'], 'message_received', (bot, message) => {
+  bot.reply(message, 'Hey there.');
+});
+
+
+// this is triggered when a user clicks the send-to-messenger plugin
+controller.on('facebook_optin', (bot, message) => {
+  bot.reply(message, 'Welcome to my app!');
+});
