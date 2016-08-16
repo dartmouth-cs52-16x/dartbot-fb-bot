@@ -49,22 +49,15 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 controller.middleware.receive.use(wit.receive);
 
 // user said hello
-controller.hears(['hello'], 'message_received', (bot, message) => {
-  // console.log('in hello');
-  console.log(message.intents[0]);
-  bot.reply(message, 'Hey there.');
+controller.hears(['hello, hi, hey'], 'message_received', (bot, message) => {
+  bot.reply(message, 'Hey there!');
 });
 
-controller.hears(['hello'], 'message_received', (bot, message) => {
+controller.hears(['where is', 'where', 'find'], 'message_received', (bot, message) => {
 
 });
-//
-//
-// // this is triggered when a user clicks the send-to-messenger plugin
-// controller.on('facebook_optin', (bot, message) => {
-//   bot.reply(message, 'Welcome to my app!');
-// });
-//
+
+
 controller.hears(['tour'], 'message_received', (bot, message) => {
   function askFirstQuestion(resp, conv) {
     const tourRatingMessage = {
@@ -176,4 +169,16 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   if (message.intents[0] && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
   }
+});
+
+controller.on('message_received', (bot, message) => {
+  console.log(message);
+  if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
+    if (message.attachments[0].payload.coordinates) {
+      console.log(message.attachments[0].payload.coordinates.lat);
+    }
+  }
+    // carefully examine and
+    // handle the message here!
+    // Note: Platforms such as Slack send many kinds of messages, not all of which contain a text field!
 });
