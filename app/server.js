@@ -14,7 +14,7 @@ console.log('starting bot');
 
 const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
-});
+}).startRTM();
 
 // botkit controller
 const controller = botkit.facebookbot({
