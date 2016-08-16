@@ -66,8 +66,73 @@ controller.hears(['hello'], 'message_received', (bot, message) => {
 // });
 //
 controller.hears(['tour'], 'message_received', (bot, message) => {
+  function askFirstQuestion(resp, conv) {
+    const tourRatingMessage = {
+      'text': 'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?',
+      'quick_replies': [
+        {
+          'content_type': 'text',
+          'title': '1',
+          'payload': '1_SCORE',
+        },
+        {
+          'content_type': 'text',
+          'title': '2',
+          'payload': '2_SCORE',
+        },
+        {
+          'content_type': 'text',
+          'title': '3',
+          'payload': '3_SCORE',
+        },
+        {
+          'content_type': 'text',
+          'title': '4',
+          'payload': '4_SCORE',
+        },
+        {
+          'content_type': 'text',
+          'title': '5',
+          'payload': '5_SCORE',
+        },
+      ],
+    };
+
+    conv.ask(tourRatingMessage, (scoreResponse, convo) => {
+      switch (scoreResponse.text) {
+        case '1':
+          // save to db
+          convo.say('Bummer');
+          convo.next();
+          break;
+        case '2':
+          // save to db
+          convo.say('Bummer');
+          convo.next();
+          break;
+        case '3':
+          // save to db
+          convo.say('Bummer');
+          convo.next();
+          break;
+        case '4':
+          // save to db
+          convo.say('Bummer');
+          convo.next();
+          break;
+        case '5':
+          // save to db
+          convo.say('Bummer');
+          convo.next();
+          break;
+        default:
+          convo.say('Invalid');
+
+      }
+    });
+  }
   function confirmTour(response, convo) {
-    const topRatedMessage = {
+    const tourYesNoMessage = {
       'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
       'quick_replies': [
         {
@@ -83,18 +148,25 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
       ],
     };
 
-    convo.ask(topRatedMessage, [
+    convo.ask(tourYesNoMessage, [
+      {
+        pattern: bot.utterances.yes,
+        callback(resp, conv) {
+          askFirstQuestion(resp, conv);
+          convo.next();
+        },
+      },
       {
         pattern: bot.utterances.no,
         callback(resp, conv) {
-          convo.say('No? Well ask me anytime, I\'ll be around here somewhere!');
+          convo.say('That\'s okay! Enjoy your time at Dartmouth, and ask me any questions you have!');
           convo.next();
         },
       },
       {
         default: true,
         callback(resp, conv) {
-          convo.say('I\'ll take that as a no? Well, ask anytime!');
+          convo.say('I think that\'s a no? No worries, enjoy your time at Dartmouth, and ask me any questions you have!');
           convo.next();
         },
       },
@@ -103,22 +175,5 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
   if (message.intents[0] && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
-    // const topRatedMessage = {
-    //   'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
-    //   'quick_replies': [
-    //     {
-    //       'content_type': 'text',
-    //       'title': 'Yes',
-    //       'payload': 'YES_FEEDBACK',
-    //     },
-    //     {
-    //       'content_type': 'text',
-    //       'title': 'No',
-    //       'payload': 'NO_FEEDBACK',
-    //     },
-    //   ],
-    // };
-    //
-    // bot.reply(message, topRatedMessage);
   }
 });
