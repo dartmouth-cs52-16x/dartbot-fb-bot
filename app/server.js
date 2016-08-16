@@ -50,7 +50,7 @@ controller.middleware.receive.use(wit.receive);
 
 // user said hello
 controller.hears(['hello'], 'message_received', (bot, message) => {
-  console.log(message.intents);
+  console.log(message.intents[0]);
   bot.reply(message, 'Hey there.');
 });
 
