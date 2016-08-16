@@ -14,7 +14,7 @@ console.log('starting bot');
 
 const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
-}).startRTM();
+});
 
 // botkit controller
 const controller = botkit.facebookbot({
@@ -25,7 +25,7 @@ const controller = botkit.facebookbot({
 
 // initialize slackbot
 const fbbot = controller.spawn({
-});
+}).startRTM();
 console.log(process.env.PORT);
 controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   controller.createWebhookEndpoints(webserver, fbbot, () => {
