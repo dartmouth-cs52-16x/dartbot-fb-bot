@@ -50,7 +50,7 @@ controller.on('facebook_optin', (bot, message) => {
 });
 
 controller.hears(['tour'], 'message_received', wit.hears, (bot, message) => {
-  console.log('Entitities' + message.intents.outcomes.entities);
+  console.log(message.intents);
   if (message.intents.outcomes.entities.tour_prompt && message.intents.outcomes.tour_prompt[0].confidence > 0.6) {
     const topRatedMessage = {
       'quick_replies': [
