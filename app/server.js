@@ -1,7 +1,6 @@
 import botkit from 'botkit';
 import dotenv from 'dotenv';
-const Witbot = require('witbot');
-const witbot = Witbot(process.env.WIT_AI_TOKEN);
+
 
 // import { getLocations } from './api';
 // import mongoStorage from 'botkit-storage-mongo';
@@ -13,9 +12,9 @@ dotenv.config({ silent: true });
 console.log('starting bot');
 
 
-// const wit = require('botkit-middleware-witai')({
-//   token: process.env.WIT_AI_TOKEN,
-// });
+const wit = require('botkit-middleware-witai')({
+  token: process.env.WIT_AI_TOKEN,
+});
 
 // botkit controller
 const controller = botkit.facebookbot({
@@ -36,21 +35,22 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 });
 
 
-controller.hears(['.*'], 'message_received', (bot, message) => {
-  console.log('hello');
-  const wit = witbot.process(message.text, bot, message);
-  console.log(wit);
-  wit.hears('tour_prompt', 0.65, (wbot, wmessage, outcome) => {
-    console.log('here');
-    bot.reply(message, 'I heard tour!');
-  });
-});
+// controller.hears(['.*'], 'message_received', (bot, message) => {
+//   console.log('hello');
+//   const wit = witbot.process(message.text, bot, message);
+//   console.log(wit);
+//   wit.hears('tour_prompt', 0.65, (wbot, wmessage, outcome) => {
+//     console.log('here');
+//     bot.reply(message, 'I heard tour!');
+//   });
+// });
 
 
-// controller.middleware.receive.use(wit.receive);
+controller.middleware.receive.use(wit.receive);
 
 // user said hello
 controller.hears(['hello'], 'message_received', (bot, message) => {
+  console.log(message.intents);
   bot.reply(message, 'Hey there.');
 });
 
