@@ -93,6 +93,7 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   //     },
   //   ]);
   // }
+  console.log('out here');
   if (message['outcomes']) {
     console.log('here');
     console.log(message.intents.outcomes[0].entities.tour_prompt[0].confidence);
