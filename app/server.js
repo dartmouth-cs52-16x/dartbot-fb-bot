@@ -37,7 +37,7 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 controller.middleware.receive.use(wit.receive);
 
 // user said hello
-controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
+controller.hears(['hello'], 'message_received', (bot, message) => {
   console.log('message was');
   console.log(message);
   bot.reply(message, 'Hey there.');
@@ -57,6 +57,7 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   console.log(message.intents);
   // if (message.intents.outcomes.entities.tour_prompt && message.intents.outcomes.tour_prompt[0].confidence > 0.6) {
   const topRatedMessage = {
+    'text': 'Pick a color:',
     'quick_replies': [
       {
         'content_type': 'text',
@@ -71,6 +72,6 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
     ],
   };
 
-  bot.reply(message, 'topRatedMessage');
+  bot.reply(message, topRatedMessage);
   // }
 });
