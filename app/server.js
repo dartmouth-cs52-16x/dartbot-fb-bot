@@ -114,12 +114,8 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   // console.log(message.intents[0].outcomes);
   // console.log(message.intents);
 
-  if (message.intents[0].entit) {
-    console.log('here');
-    console.log(message.intents[0].outcomes[0].entities.tour_prompt[0].confidence);
-  }
   // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
-  if (message.intents[0] && message.intents[0].entities && message.intents[0].entitities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
+  if (message.intents[0] && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     const topRatedMessage = {
       'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
       'quick_replies': [
