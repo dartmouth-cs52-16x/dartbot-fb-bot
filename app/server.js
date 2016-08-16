@@ -103,22 +103,22 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
   if (message.intents[0] && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
-    const topRatedMessage = {
-      'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
-      'quick_replies': [
-        {
-          'content_type': 'text',
-          'title': 'Yes',
-          'payload': 'YES_FEEDBACK',
-        },
-        {
-          'content_type': 'text',
-          'title': 'No',
-          'payload': 'NO_FEEDBACK',
-        },
-      ],
-    };
-
-    bot.reply(message, topRatedMessage);
+    // const topRatedMessage = {
+    //   'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
+    //   'quick_replies': [
+    //     {
+    //       'content_type': 'text',
+    //       'title': 'Yes',
+    //       'payload': 'YES_FEEDBACK',
+    //     },
+    //     {
+    //       'content_type': 'text',
+    //       'title': 'No',
+    //       'payload': 'NO_FEEDBACK',
+    //     },
+    //   ],
+    // };
+    //
+    // bot.reply(message, topRatedMessage);
   }
 });
