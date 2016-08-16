@@ -99,7 +99,8 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   //     },
   //   ]);
   // }
-  console.log(message.intents.outcomes[0].entities.tour_prompt[0].confidence);
+  if (message.intents.outcomes)
+    console.log(message.intents.outcomes[0].entities.tour_prompt[0].confidence);
   // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
   if (message.intents.outcomes && /* message.intents.outcomes[0] && message.intents.outcomes[0].entities.tour_prompt &&*/ message.intents.outcomes[0].entities.tour_prompt[0].confidence > 0.6) {
     const topRatedMessage = {
