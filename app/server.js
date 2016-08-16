@@ -10,6 +10,8 @@ import dotenv from 'dotenv';
 
 dotenv.config({ silent: true });
 console.log('starting bot');
+console.log('starting bot 2');
+
 
 const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
