@@ -36,11 +36,12 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 controller.middleware.receive.use(wit.receive);
 
 // user said hello
-controller.hears(['hello'], 'message_received', (bot, message) => {
+controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
   bot.reply(message, 'Hey there.');
 });
 
 controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
+
 });
 //
 //
@@ -95,12 +96,12 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   // }
   console.log('out here');
   console.log(message.intents);
-  if (message['outcomes']) {
+  if (message.outcomes) {
     console.log('here');
     console.log(message.intents.outcomes[0].entities.tour_prompt[0].confidence);
   }
   // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
-  if (message['intents']['outcomes'] && /* message.intents.outcomes[0] && message.intents.outcomes[0].entities.tour_prompt &&*/ message['intents']['outcomes'][0]['entities']['tour_prompt'][0]['confidence'] > 0.6) {
+  if (message.intents.outcomes && /* message.intents.outcomes[0] && message.intents.outcomes[0].entities.tour_prompt &&*/ message.intents.outcomes[0].entities.tour_prompt[0].confidence > 0.6) {
     const topRatedMessage = {
       'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
       'quick_replies': [
