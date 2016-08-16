@@ -53,24 +53,24 @@ controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
 //   bot.reply(message, 'Welcome to my app!');
 // });
 //
-// controller.hears(['tour'], 'message_received', wit.hears, (bot, message) => {
-//   // console.log(message.intents);
-//   if (message.intents.outcomes.entities.tour_prompt && message.intents.outcomes.tour_prompt[0].confidence > 0.6) {
-//     const topRatedMessage = {
-//       'quick_replies': [
-//         {
-//           'content_type': 'text',
-//           'title': 'Red',
-//           'payload': 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED',
-//         },
-//         {
-//           'content_type': 'text',
-//           'title': 'Green',
-//           'payload': 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN',
-//         },
-//       ],
-//     };
-//
-//     bot.reply(topRatedMessage);
-//   }
-// });
+controller.hears(['tour'], 'message_received', (bot, message) => {
+  console.log(message.intents);
+  // if (message.intents.outcomes.entities.tour_prompt && message.intents.outcomes.tour_prompt[0].confidence > 0.6) {
+  const topRatedMessage = {
+    'quick_replies': [
+      {
+        'content_type': 'text',
+        'title': 'Red',
+        'payload': 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED',
+      },
+      {
+        'content_type': 'text',
+        'title': 'Green',
+        'payload': 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN',
+      },
+    ],
+  };
+
+  bot.reply(message, topRatedMessage);
+  // }
+});
