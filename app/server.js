@@ -42,7 +42,7 @@ controller.hears(['hello'], 'message_received', (bot, message) => {
 });
 
 controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
-  console.log(message.intents.outcomes.entities);
+  // console.log(message.intents.outcomes.entities);
 });
 
 
