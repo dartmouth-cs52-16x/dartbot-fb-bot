@@ -71,6 +71,6 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
     ],
   };
 
-  bot.reply(message, topRatedMessage);
+  bot.reply(message, 'topRatedMessage');
   // }
 });
