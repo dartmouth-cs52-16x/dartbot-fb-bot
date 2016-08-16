@@ -25,6 +25,7 @@
     "mongodb": "^1.4.40",
     "react": "^15.3.0",
     "redux": "^3.5.2",
+    "witbot": "^2.1.0",
     "yelp": "^1.0.1"
   },
   "devDependencies": {

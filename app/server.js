@@ -1,6 +1,7 @@
 import botkit from 'botkit';
 import dotenv from 'dotenv';
-
+const Witbot = require('witbot');
+const witbot = Witbot(process.env.WIT_AI_TOKEN);
 
 // import { getLocations } from './api';
 // import mongoStorage from 'botkit-storage-mongo';
@@ -12,9 +13,9 @@ dotenv.config({ silent: true });
 console.log('starting bot');
 
 
-const wit = require('botkit-middleware-witai')({
-  token: process.env.WIT_AI_TOKEN,
-});
+// const wit = require('botkit-middleware-witai')({
+//   token: process.env.WIT_AI_TOKEN,
+// });
 
 // botkit controller
 const controller = botkit.facebookbot({
@@ -25,7 +26,8 @@ const controller = botkit.facebookbot({
 
 // initialize slackbot
 const fbbot = controller.spawn({
-}).startRTM();
+});
+
 console.log(process.env.PORT);
 controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   controller.createWebhookEndpoints(webserver, fbbot, () => {
@@ -33,14 +35,23 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   });
 });
 
-controller.middleware.receive.use(wit.receive);
+
+controller.hears(['.*'], 'message_received', (bot, message) => {
+  const wit = witbot.process(message.text, bot, message);
+  wit.hears('tour_prompt', 0.65, (wbot, wmessage, outcome) => {
+    wbot.reply(wmessage, 'I heard tour!');
+  });
+});
+
+
+// controller.middleware.receive.use(wit.receive);
 
 // user said hello
-controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
+controller.hears(['hello'], 'message_received', (bot, message) => {
   bot.reply(message, 'Hey there.');
 });
 
-controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
+controller.hears(['hello'], 'message_received', (bot, message) => {
 
 });
 //
@@ -50,74 +61,74 @@ controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
 //   bot.reply(message, 'Welcome to my app!');
 // });
 //
-controller.hears(['tour'], 'message_received', (bot, message) => {
-  // function confirmSurveyTaking(response, convo) {
-  //   const topRatedMessage = {
-  //     'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
-  //     'quick_replies': [
-  //       {
-  //         'content_type': 'text',
-  //         'title': 'Yes',
-  //         'payload': 'YES_FEEDBACK',
-  //       },
-  //       {
-  //         'content_type': 'text',
-  //         'title': 'No',
-  //         'payload': 'NO_FEEDBACK',
-  //       },
-  //     ],
-  //   };
-  //
-  //   // bot.reply(message, topRatedMessage);
-  //   convo.ask(topRatedMessage, [
-  //     {
-  //       pattern: bot.utterances.yes,
-  //       callback(resp, conv) {
-  //         convo.say('Well I would probably use Google');
-  //         // getFoodType(resp, conv);
-  //         // convo.next();
-  //       },
-  //     },
-  //     {
-  //       pattern: bot.utterances.no,
-  //       callback(resp, conv) {
-  //         convo.say('No? Well ask me anytime, I\'ll be around here somewhere!');
-  //         convo.next();
-  //       },
-  //     },
-  //     {
-  //       default: true,
-  //       callback(resp, conv) {
-  //         convo.say('I\'ll take that as a no? Well, ask anytime!');
-  //         convo.next();
-  //       },
-  //     },
-  //   ]);
-  // }
-  console.log('out here');
-  console.log(message.intents);
-  if (message.outcomes) {
-    console.log('here');
-    console.log(message.intents.outcomes[0].entities.tour_prompt[0].confidence);
-  }
-  // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
-  if (message.intents.outcomes && /* message.intents.outcomes[0] && message.intents.outcomes[0].entities.tour_prompt &&*/ message.intents.outcomes[0].entities.tour_prompt[0].confidence > 0.6) {
-    const topRatedMessage = {
-      'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
-      'quick_replies': [
-        {
-          'content_type': 'text',
-          'title': 'Yes',
-          'payload': 'YES_FEEDBACK',
-        },
-        {
-          'content_type': 'text',
-          'title': 'No',
-          'payload': 'NO_FEEDBACK',
-        },
-      ],
-    };
-
-    bot.reply(message, topRatedMessage);
-  }
-});
+// controller.hears(['tour'], 'message_received', (bot, message) => {
+//   // function confirmSurveyTaking(response, convo) {
+//   //   const topRatedMessage = {
+//   //     'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
+//   //     'quick_replies': [
+//   //       {
+//   //         'content_type': 'text',
+//   //         'title': 'Yes',
+//   //         'payload': 'YES_FEEDBACK',
+//   //       },
+//   //       {
+//   //         'content_type': 'text',
+//   //         'title': 'No',
+//   //         'payload': 'NO_FEEDBACK',
+//   //       },
+//   //     ],
+//   //   };
+//   //
+//   //   // bot.reply(message, topRatedMessage);
+//   //   convo.ask(topRatedMessage, [
+//   //     {
+//   //       pattern: bot.utterances.yes,
+//   //       callback(resp, conv) {
+//   //         convo.say('Well I would probably use Google');
+//   //         // getFoodType(resp, conv);
+//   //         // convo.next();
+//   //       },
+//   //     },
+//   //     {
+//   //       pattern: bot.utterances.no,
+//   //       callback(resp, conv) {
+//   //         convo.say('No? Well ask me anytime, I\'ll be around here somewhere!');
+//   //         convo.next();
+//   //       },
+//   //     },
+//   //     {
+//   //       default: true,
+//   //       callback(resp, conv) {
+//   //         convo.say('I\'ll take that as a no? Well, ask anytime!');
+//   //         convo.next();
+//   //       },
+//   //     },
+//   //   ]);
+//   // }
+//   console.log('out here');
+//   console.log(message.intents);
+//   if (message.outcomes) {
+//     console.log('here');
+//     console.log(message.intents.outcomes[0].entities.tour_prompt[0].confidence);
+//   }
+//   // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
+//   if (message.intents.outcomes && /* message.intents.outcomes[0] && message.intents.outcomes[0].entities.tour_prompt &&*/ message.intents.outcomes[0].entities.tour_prompt[0].confidence > 0.6) {
+//     const topRatedMessage = {
+//       'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
+//       'quick_replies': [
+//         {
+//           'content_type': 'text',
+//           'title': 'Yes',
+//           'payload': 'YES_FEEDBACK',
+//         },
+//         {
+//           'content_type': 'text',
+//           'title': 'No',
+//           'payload': 'NO_FEEDBACK',
+//         },
+//       ],
+//     };
+//
+//     bot.reply(message, topRatedMessage);
+//   }
+// });
