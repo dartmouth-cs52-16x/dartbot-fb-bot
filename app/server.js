@@ -110,7 +110,7 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   //   ]);
   // }
   // console.log('out here');
-  console.log(message.intents[0].outcomes);
+  console.log(message.intents[0]);
   // console.log(message.intents[0].outcomes);
   // console.log(message.intents);
 
