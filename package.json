@@ -5,7 +5,7 @@
   "author": "Tim Tregubov and Alma Wang",
   "main": "app/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/eslint **.js",
     "dev": "nodemon app/server.js --exec babel-node",
     "start": "babel-node app/server.js",
     "build": "babel app -d dist",
