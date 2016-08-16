@@ -10,7 +10,6 @@ import dotenv from 'dotenv';
 
 dotenv.config({ silent: true });
 console.log('starting bot');
-console.log('starting bot 2');
 
 
 const wit = require('botkit-middleware-witai')({
@@ -38,13 +37,10 @@ controller.middleware.receive.use(wit.receive);
 
 // user said hello
 controller.hears(['hello'], 'message_received', (bot, message) => {
-  console.log('message was');
-  console.log(message);
   bot.reply(message, 'Hey there.');
 });
 
 controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
-  console.log(message.intents.outcomes.entities);
 });
 //
 //
@@ -54,8 +50,6 @@ controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
 // });
 //
 controller.hears(['tour'], 'message_received', (bot, message) => {
-  console.log(message.intents);
-
   // function confirmSurveyTaking(response, convo) {
   //   const topRatedMessage = {
   //     'text': 'You went on the Dartmouth tour? Would you like to give us some quick feedback to help improve it?',
