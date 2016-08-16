@@ -1,6 +1,7 @@
 import botkit from 'botkit';
 import dotenv from 'dotenv';
 
+
 // import { getLocations } from './api';
 // import mongoStorage from 'botkit-storage-mongo';
 
@@ -9,6 +10,10 @@ import dotenv from 'dotenv';
 
 dotenv.config({ silent: true });
 console.log('starting bot');
+
+const wit = require('botkit-middleware-witai')({
+  token: process.env.WIT_AI_TOKEN,
+});
 
 // botkit controller
 const controller = botkit.facebookbot({
@@ -27,9 +32,15 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   });
 });
 
+controller.middleware.receive.use(wit.receive);
+
 // user said hello
 controller.hears(['hello'], 'message_received', (bot, message) => {
   bot.reply(message, 'Hey there.');
+});
+
+controller.hears(['hello'], 'message_received', wit.hears, (bot, message) => {
+  console.log(message.intents.outcomes.entities);
 });
 
 
