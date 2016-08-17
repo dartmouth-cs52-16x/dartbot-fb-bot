@@ -34,7 +34,6 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   });
 });
 
-
 controller.on('message_received', (bot, message) => {
   console.log('recieved in server.js m_r');
   if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
