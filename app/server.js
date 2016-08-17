@@ -35,7 +35,7 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 });
 
 controller.on('message_received', (bot, message) => {
-  console.log(message);
+  console.log('recieved in server.js m_r');
   if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
     if (message.attachments[0].payload.coordinates) {
       console.log(message.attachments[0].payload.coordinates.lat);
