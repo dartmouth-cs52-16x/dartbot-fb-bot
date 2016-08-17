@@ -58,7 +58,7 @@ controller.on('message_received', (bot, message) => {
 // });
 
 
-controller.middleware.receive.use(wit.receive);
+// controller.middleware.receive.use(wit.receive);
 
 // user said hello
 controller.hears(['hello, hi, hey'], 'message_received', (bot, message) => {
