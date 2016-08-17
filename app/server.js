@@ -132,7 +132,6 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
           break;
         default:
           convo.say('Invalid');
-
       }
     });
   }
