@@ -69,7 +69,6 @@ controller.hears(['where is', 'where', 'find'], 'message_received', (bot, messag
 
 });
 
-
 controller.hears(['tour'], 'message_received', (bot, message) => {
   function askFirstQuestion(resp, conv) {
     const tourRatingMessage = {
