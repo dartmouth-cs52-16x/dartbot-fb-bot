@@ -34,18 +34,17 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   });
 });
 
-
-// controller.on('message_received', (bot, message) => {
-//   console.log('recieved in server.js m_r');
-//   if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
-//     if (message.attachments[0].payload.coordinates) {
-//       console.log(message.attachments[0].payload.coordinates.lat);
-//     }
-//   }
-//     // carefully examine and
-//     // handle the message here!
-//     // Note: Platforms such as Slack send many kinds of messages, not all of which contain a text field!
-// });
+controller.on('message_received', (bot, message) => {
+  console.log(message);
+  if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
+    if (message.attachments[0].payload.coordinates) {
+      console.log(message.attachments[0].payload.coordinates.lat);
+    }
+  }
+    // carefully examine and
+    // handle the message here!
+    // Note: Platforms such as Slack send many kinds of messages, not all of which contain a text field!
+});
 
 // controller.hears(['.*'], 'message_received', (bot, message) => {
 //   console.log('hello');
@@ -61,13 +60,14 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 controller.middleware.receive.use(wit.receive);
 
 // user said hello
-controller.hears(['hello', 'hi', 'hey'], 'message_received', (bot, message) => {
+controller.hears(['hello, hi, hey'], 'message_received', (bot, message) => {
   bot.reply(message, 'Hey there!');
 });
 
 controller.hears(['where is', 'where', 'find'], 'message_received', (bot, message) => {
 
 });
+
 
 controller.hears(['tour'], 'message_received', (bot, message) => {
   function askFirstQuestion(resp, conv) {
@@ -131,6 +131,7 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
           break;
         default:
           convo.say('Invalid');
+
       }
     });
   }
@@ -175,9 +176,8 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
       },
     ]);
   }
-  console.log('in hears: ' + message.intents);
   // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
-  if (message.intents && message.intents[0] && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
+  if (message.intents[0] && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
   }
 });
