@@ -16,12 +16,15 @@ const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
 });
 
+
 // botkit controller
 const controller = botkit.facebookbot({
   access_token: process.env.FB_BOT_ACCESS_TOKEN,
   verify_token: process.env.FB_BOT_VERIFY_TOKEN,
 //  storage: mongoStorage = new mongoStorage({monogUri: process.env.MONGODB_URI}),
 });
+
+controller.middleware.receive.use(wit.receive);
 
 // initialize slackbot
 const fbbot = controller.spawn({
@@ -56,8 +59,6 @@ controller.on('message_received', (bot, message) => {
 //   });
 // });
 
-
-controller.middleware.receive.use(wit.receive);
 
 // user said hello
 controller.hears(['hello, hi, hey'], 'message_received', (bot, message) => {
