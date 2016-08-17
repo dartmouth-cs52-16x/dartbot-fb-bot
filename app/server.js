@@ -37,11 +37,11 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 
 controller.on('message_received', (bot, message) => {
   console.log('recieved in server.js m_r');
-  if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
-    if (message.attachments[0].payload.coordinates) {
-      console.log(message.attachments[0].payload.coordinates.lat);
-    }
-  }
+  // if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
+  //   if (message.attachments[0].payload.coordinates) {
+  //     console.log(message.attachments[0].payload.coordinates.lat);
+  //   }
+  // }
     // carefully examine and
     // handle the message here!
     // Note: Platforms such as Slack send many kinds of messages, not all of which contain a text field!
