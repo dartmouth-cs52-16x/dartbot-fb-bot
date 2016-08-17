@@ -61,7 +61,7 @@ controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
 // controller.middleware.receive.use(wit.receive);
 
 // user said hello
-controller.hears(['hello, hi, hey'], 'message_received', (bot, message) => {
+controller.hears(['hello', 'hi', 'hey'], 'message_received', (bot, message) => {
   bot.reply(message, 'Hey there!');
 });
 
