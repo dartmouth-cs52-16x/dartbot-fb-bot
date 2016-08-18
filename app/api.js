@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = 'http://localhost:9000';
+const ROOT_URL = 'http://dartmouthbot.herokuapp.com/api';
 
 export function getLocations() {
   axios.get(`${ROOT_URL}/locs`)
