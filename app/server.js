@@ -1,5 +1,6 @@
 import botkit from 'botkit';
 import dotenv from 'dotenv';
+import api from './api';
 
 
 // import { getLocations } from './api';
@@ -10,7 +11,7 @@ import dotenv from 'dotenv';
 
 dotenv.config({ silent: true });
 console.log('starting bot');
-
+console.log(api.getLocations());
 
 const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
