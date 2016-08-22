@@ -70,7 +70,7 @@ function returnNearestLocation(bot, message, coordinates) {
   	.then(response => {
     	console.log('got a response');
   	}).catch(error => {
-    	console.log(error);
+    	console.log('error');
   });
 }
 
