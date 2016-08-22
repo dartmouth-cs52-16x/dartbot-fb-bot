@@ -1,7 +1,10 @@
 import botkit from 'botkit';
 import dotenv from 'dotenv';
-import { getLocations } from './api';
+// import { getLocations } from './api';
+import axios from 'axios';
 
+const ROOT_URL = 'http://dartmouthbot.herokuapp.com/api';
+/*eslint-disable */
 
 // import { getLocations } from './api';
 // import mongoStorage from 'botkit-storage-mongo';
@@ -11,7 +14,6 @@ import { getLocations } from './api';
 
 dotenv.config({ silent: true });
 console.log('starting bot');
-console.log(getLocations());
 
 const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
@@ -42,7 +44,7 @@ controller.on('message_received', (bot, message) => {
   console.log(message);
   if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
     if (message.attachments[0].payload.coordinates) {
-      console.log(message.attachments[0].payload.coordinates.lat);
+      console.log(message.attachments[0].payload.coordinates.long);
     }
   }
     // carefully examine and
@@ -59,6 +61,17 @@ controller.on('message_received', (bot, message) => {
 //     bot.reply(message, 'I heard tour!');
 //   });
 // });
+
+function returnNearestLocation(bot, message, coordinates) {
+  bot.reply('Beep boop. Finding your nearest tour location...');
+	const fields = { lat: coordinates.lat, lon: coordinates.long };
+	axios.put(`${ROOT_URL}/locs/closest`, fields)
+  	.then(response => {
+    	console.log(response);
+  	}).catch(error => {
+    	console.log(error);
+  });
+}
 
 
 // user said hello
