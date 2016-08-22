@@ -45,6 +45,7 @@ controller.on('message_received', (bot, message) => {
   if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
     if (message.attachments[0].payload.coordinates) {
       console.log(message.attachments[0].payload.coordinates.long);
+			returnNearestLocation(bot, message, message.attachments[0].payload.coordinates.long);
     }
   }
     // carefully examine and
@@ -75,7 +76,7 @@ function returnNearestLocation(bot, message, coordinates) {
 
 
 // user said hello
-controller.hears(['hello, hi, hey'], 'message_received', (bot, message) => {
+controller.hears(['hello', 'hi', 'hey'], 'message_received', (bot, message) => {
   bot.reply(message, 'Hey there!');
 });
 
