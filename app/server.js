@@ -64,7 +64,7 @@ controller.on('message_received', (bot, message) => {
 // });
 
 function returnNearestLocation(bot, message, coordinates) {
-  bot.reply('Beep boop. Finding your nearest tour location...');
+  bot.reply(message, 'Beep boop. Finding your nearest tour location...');
 	const fields = { lat: coordinates.lat, lon: coordinates.long };
 	axios.put(`${ROOT_URL}/locs/closest`, fields)
   	.then(response => {
