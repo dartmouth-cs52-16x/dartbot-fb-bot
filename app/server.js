@@ -68,7 +68,7 @@ function returnNearestLocation(bot, message, coordinates) {
 	const fields = { lat: coordinates.lat, lon: coordinates.long };
 	axios.put(`${ROOT_URL}/locs/closest`, fields)
   	.then(response => {
-    	console.log(response);
+    	console.log('got a response');
   	}).catch(error => {
     	console.log(error);
   });
