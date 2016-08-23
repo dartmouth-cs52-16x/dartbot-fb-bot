@@ -119,7 +119,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
 	  		.then(response => {
 					//bot.reply(message, response.data.response)
           bot.reply(message, {
-	          'text': response.data.response,
+
 	          'attachment': {
 	              'type': 'template',
 	              'payload': {
@@ -127,6 +127,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
 	                  'elements': {
 	                      'element': {
 	                          'title': 'Financial Aid',
+														'subtitle': response.data.response,
 	                          'image_url': 'http:\/\/diplomaclassics.com\/images\/Entities\/campus_photo\/v2\/DartBakerLibrary222435_original.png',
 	                          'item_url': 'http:\/\/admissions.dartmouth.edu\/financial-aid\/',
 		                    },
