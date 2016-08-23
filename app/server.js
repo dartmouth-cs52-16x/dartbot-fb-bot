@@ -19,6 +19,20 @@ const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
 });
 
+const menuFields = {
+  "setting_type" : "call_to_actions",
+  "thread_state" : "existing_thread",
+  "call_to_actions":[
+    {
+      "type":"web_url",
+      "title":"View Website",
+      "url":"http://petersapparel.parseapp.com/"
+    }
+  ]
+}
+axios.post(`https://graph.facebook.com/v2.6/me/thread_settings?access_token=${process.env.FB_BOT_ACCESS_TOKEN}`, menuFields)
+
+
 
 // botkit controller
 const controller = botkit.facebookbot({
