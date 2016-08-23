@@ -99,36 +99,40 @@ controller.hears(['hello', 'hi', 'hey'], 'message_received', (bot, message) => {
 
 controller.hears(['financial aid'], 'message_received', (bot, message) => {
 	if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.financial_aid_query && message.intents[0].entities.financial_aid_query[0].confidence > 0.6) {
+		let intent;
 		if (message.intents[0].entities.financial_aid_query[0].value === 'generic') {
-			bot.reply(message, 'generic')
+			intent = 'gen_fin_aid'
 		}
 		else if (message.intents[0].entities.financial_aid_query[0].value === 'student_count') {
-			bot.reply(message, 'student count')
+			intent = 'count_fin_aid'
 		}
-		// // const fields = { intent: 'fin_aid' }
-		// // axios.put(`${ROOT_URL}/intent`, fields)
-	  // // 	.then(response => {
-		// // 		if (response.data.response)
-		// // 		bot.reply(message, {
-		// // 			"text" : response.data.
-		// // 			"attachment": {
-	  // //           "type": "template",
-	  // //           "payload": {
-	  // //               "template_type": "generic",
-	  // //               "elements": {
-	  // //                   "element": {
-	  // //                       "title": response.data.title,
-	  // //                       "image_url": "http://diplomaclassics.com/images/Entities/campus_photo/v2/DartBakerLibrary222435_original.png",
-	  // //                       "item_url": "http:\/\/maps.apple.com\/maps?q="+locLat+","+locLong+"&z=16"
-	  // //                   }
-	  // //               }
-	  // //           }
-	  // //       }
-	  // //   	});
-	  //   	//bot.reply(message, `It was: ${response.data.hits}`)
-	  // 	}).catch(error => {
-		// 		bot.reply(message, 'Didnt find it!')
-	  // });
+		else {
+			bot.reply(message, 'Dartmouth takes pride in its great financial aid. Would you like to learn about it? Say something like \'Can you tell about financial aid at Dartmouth?\' or ask something like \'How many students at Dartmouth recieve financial aid?\'')
+			return;
+		}
+		const fields = { intent }
+		axios.put(`${ROOT_URL}/intent`, fields)
+	  	.then(response => {
+				if (response.data.response)
+				bot.reply(message, {
+					"text" : response.data.response,
+					"attachment": {
+	            "type": "template",
+	            "payload": {
+	                "template_type": "generic",
+	                "elements": {
+	                    "element": {
+	                        "title": 'Financial Aid',
+	                        "image_url": "http://diplomaclassics.com/images/Entities/campus_photo/v2/DartBakerLibrary222435_original.png",
+	                        "item_url": "http://admissions.dartmouth.edu/financial-aid/"
+	                    }
+	                }
+	            }
+	        }
+	    	});
+	  	}).catch(error => {
+				bot.reply(message, 'Didnt find it!')
+	  });
   }
 })
 
