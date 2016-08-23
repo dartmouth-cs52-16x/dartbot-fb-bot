@@ -19,20 +19,6 @@ const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
 });
 
-const menuFields = {
-  "setting_type" : "call_to_actions",
-  "thread_state" : "existing_thread",
-  "call_to_actions":[
-    {
-      "type":"web_url",
-      "title":"View Website",
-      "url":"http://petersapparel.parseapp.com/"
-    }
-  ]
-}
-axios.post(`https://graph.facebook.com/v2.6/me/thread_settings?access_token=${process.env.FB_BOT_ACCESS_TOKEN}`, menuFields)
-
-
 
 // botkit controller
 const controller = botkit.facebookbot({
@@ -210,4 +196,19 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
   }
+});
+
+controller.hears(['update menu'], 'message_received', (bot, message) => {
+	const menuFields = {
+	  "setting_type" : "call_to_actions",
+	  "thread_state" : "existing_thread",
+	  "call_to_actions":[
+	    {
+	      "type":"web_url",
+	      "title":"View Website",
+	      "url":"http://petersapparel.parseapp.com/"
+	    }
+	  ]
+	}
+	axios.post(`https://graph.facebook.com/v2.6/me/thread_settings?access_token=${process.env.FB_BOT_ACCESS_TOKEN}`, menuFields)
 });
