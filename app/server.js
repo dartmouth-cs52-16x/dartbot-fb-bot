@@ -68,23 +68,22 @@ function returnNearestLocation(bot, message, coordinates) {
 	const fields = { lat: coordinates.lat, long: coordinates.long };
 	axios.put(`${ROOT_URL}/data/closest`, fields)
   	.then(response => {
-			locLat = response.data.gps.lat
-			locLong = response.data.gps.long
-			// bot.reply(message, {
-			// 	"attachment": {
-      //       "type": "template",
-      //       "payload": {
-      //           "template_type": "generic",
-      //           "elements": {
-      //               "element": {
-      //                   "title": response.data.title,
-      //                   "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+locLat+","+locLong+"&zoom=25&markers="+locLat+","+locLong,
-      //                   "item_url": "http:\/\/maps.apple.com\/maps?q="+locLat+","+locLong+"&z=16"
-      //               }
-      //           }
-      //       }
-      //   }
-			bot.reply(message, 'found:')
+			const locLat = response.data.gps.lat;
+			const locLong = response.data.gps.long;
+			bot.reply(message, {
+				"attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": {
+                    "element": {
+                        "title": response.data.title,
+                        "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+locLat+","+locLong+"&zoom=25&markers="+locLat+","+locLong,
+                        "item_url": "http:\/\/maps.apple.com\/maps?q="+locLat+","+locLong+"&z=16"
+                    }
+                }
+            }
+        }
     	//});
     	//bot.reply(message, `It was: ${response.data.hits}`)
   	}).catch(error => {
