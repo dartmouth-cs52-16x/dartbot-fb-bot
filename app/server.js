@@ -147,8 +147,9 @@ controller.hears(['where is', 'where', 'find'], 'message_received', (bot, messag
 
 controller.hears(['tour'], 'message_received', (bot, message) => {
   function askFirstQuestion(resp, conv) {
+		const tourRatingText = 'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
     const tourRatingMessage = {
-      'text': 'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?',
+      'text': tourRatingText,
       'quick_replies': [
         {
           'content_type': 'text',
@@ -179,30 +180,32 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
     };
 
     conv.ask(tourRatingMessage, (scoreResponse, convo) => {
-      switch (scoreResponse.text) {
+			let response = 0;
+			switch (scoreResponse.text) {
         case '1':
           // save to db
-          convo.say('Bummer');
+					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 1})
+
           convo.next();
           break;
         case '2':
           // save to db
-          convo.say('Bummer');
+					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 2})
           convo.next();
           break;
         case '3':
           // save to db
-          convo.say('Bummer');
+					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 3})
           convo.next();
           break;
         case '4':
           // save to db
-          convo.say('Bummer');
+					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 4})
           convo.next();
           break;
         case '5':
           // save to db
-          convo.say('Bummer');
+					axios.put(`${ROOT_URL}/data/closest`, {question: tourRatingText, response: 5})
           convo.next();
           break;
         default:
