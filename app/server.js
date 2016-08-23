@@ -117,23 +117,23 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
 			console.log("intent is: " + intent)
       axios.put(`${ROOT_URL}/intent`, fields)
 	  		.then(response => {
-					bot.reply(message, 'Found one')
-          // bot.reply(message, {
-	        //   // 'text': response.data.response,
-	        //   'attachment': {
-	        //       'type': 'template',
-	        //       'payload': {
-	        //           'template_type': 'generic',
-	        //           'elements': {
-	        //               'element': {
-	        //                   'title': 'Financial Aid',
-	        //                   'image_url': 'http://diplomaclassics.com/images/Entities/campus_photo/v2/DartBakerLibrary222435_original.png',
-	        //                   'item_url': 'http://admissions.dartmouth.edu/financial-aid/',
-		      //               },
-		      //           },
-		      //       },
-		      //   	},
-	    		// 	});
+					//bot.reply(message, 'Found one')
+          bot.reply(message, {
+	          'text': response.data.response,
+	          'attachment': {
+	              'type': 'template',
+	              'payload': {
+	                  'template_type': 'generic',
+	                  'elements': {
+	                      'element': {
+	                          'title': 'Financial Aid',
+	                          'image_url': 'http://diplomaclassics.com/images/Entities/campus_photo/v2/DartBakerLibrary222435_original.png',
+	                          'item_url': 'http://admissions.dartmouth.edu/financial-aid/',
+		                    },
+		                },
+		            },
+		        	},
+	    			});
 	  			}).catch(error => {
 				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
 	  			});
