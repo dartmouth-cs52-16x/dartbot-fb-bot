@@ -113,25 +113,26 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
         bot.reply(message, 'Dartmouth takes pride in its great financial aid. Would you like to learn about it? Say something like \'Can you tell about financial aid at Dartmouth?\' or ask something like \'How many students at Dartmouth recieve financial aid?\'');
         return;
 			}
-      const fields = { intent };
+      const fields = { intent: intent };
       axios.put(`${ROOT_URL}/intent`, fields)
 	  		.then(response => {
-          bot.reply(message, {
-	          // 'text': response.data.response,
-	          'attachment': {
-	              'type': 'template',
-	              'payload': {
-	                  'template_type': 'generic',
-	                  'elements': {
-	                      'element': {
-	                          'title': 'Financial Aid',
-	                          'image_url': 'http://diplomaclassics.com/images/Entities/campus_photo/v2/DartBakerLibrary222435_original.png',
-	                          'item_url': 'http://admissions.dartmouth.edu/financial-aid/',
-		                    },
-		                },
-		            },
-		        	},
-	    			});
+					bot.reply('Found one')
+          // bot.reply(message, {
+	        //   // 'text': response.data.response,
+	        //   'attachment': {
+	        //       'type': 'template',
+	        //       'payload': {
+	        //           'template_type': 'generic',
+	        //           'elements': {
+	        //               'element': {
+	        //                   'title': 'Financial Aid',
+	        //                   'image_url': 'http://diplomaclassics.com/images/Entities/campus_photo/v2/DartBakerLibrary222435_original.png',
+	        //                   'item_url': 'http://admissions.dartmouth.edu/financial-aid/',
+		      //               },
+		      //           },
+		      //       },
+		      //   	},
+	    		// 	});
 	  			}).catch(error => {
 				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
 	  			});
