@@ -114,6 +114,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
         return;
 			}
       const fields = { intent: intent };
+			console.log("intent is: " + intent)
       axios.put(`${ROOT_URL}/intent`, fields)
 	  		.then(response => {
 					bot.reply(message, 'Found one')
@@ -136,7 +137,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
 	  			}).catch(error => {
 				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
 	  			});
-				}
+			}
 });
 
 controller.hears(['where is', 'where', 'find'], 'message_received', (bot, message) => {
