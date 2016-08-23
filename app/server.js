@@ -206,7 +206,7 @@ controller.hears(['update menu'], 'message_received', (bot, message) => {
 	    {
 	      "type":"web_url",
 	      "title":"View Website",
-	      "url":"http://petersapparel.parseapp.com/"
+	      "url":"http://google.com/"
 	    }
 	  ]
 	}
