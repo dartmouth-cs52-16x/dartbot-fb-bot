@@ -133,7 +133,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
 		        	},
 	    			});
 						bot.reply(message, response.data.response)
-						
+
 	  			}).catch(error => {
 				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
 	  			});
@@ -206,7 +206,7 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
           convo.next();
           break;
         default:
-          convo.say('Invalid');
+          convo.repeat();
 
       }
     });
