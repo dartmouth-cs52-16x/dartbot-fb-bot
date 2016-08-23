@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 
 const ROOT_URL = 'http://dartmouthbot.herokuapp.com/api';
-/*eslint-disable */
+
 
 // import { getLocations } from './api';
 // import mongoStorage from 'botkit-storage-mongo';
@@ -45,7 +45,9 @@ controller.on('message_received', (bot, message) => {
   if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
     if (message.attachments[0].payload.coordinates) {
       console.log(message.attachments[0].payload.coordinates.long);
+			/* eslint-disable */
 			returnNearestLocation(bot, message, message.attachments[0].payload.coordinates.long);
+			/* eslint-enable */
     }
   }
     // carefully examine and
@@ -62,32 +64,33 @@ controller.on('message_received', (bot, message) => {
 //     bot.reply(message, 'I heard tour!');
 //   });
 // });
+/* eslint-disable */
 
 function returnNearestLocation(bot, message, coordinates) {
   bot.reply(message, 'Beep boop. Finding your nearest tour location...');
 	const fields = { lat: coordinates.lat, long: coordinates.long };
 	axios.put(`${ROOT_URL}/data/closest`, fields)
-  	.then(response => {
-			const locLat = response.data.gps.lat;
-			const locLong = response.data.gps.long;
-			bot.reply(message, {
-				"attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": {
-                    "element": {
-                        "title": response.data.title,
-                        "image_url": "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+locLat+","+locLong+"&zoom=25&markers="+locLat+","+locLong,
-                        "item_url": "http:\/\/maps.apple.com\/maps?q="+locLat+","+locLong+"&z=16"
-                    }
-                }
-            }
-        }
-    	});
-    	//bot.reply(message, `It was: ${response.data.hits}`)
+		.then(response => {
+	    const locLat = response.data.gps.lat;
+	    const locLong = response.data.gps.long;
+	    bot.reply(message, {
+	      'attachment': {
+			  'type': 'template',
+			  'payload': {
+			    'template_type': 'generic',
+			    'elements': {
+			      'element': {
+			        'title': response.data.title,
+			        'image_url': 'https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center=' + locLat + ',' + locLong + '&zoom=25&markers=' + locLat + ',' + locLong,
+			        'item_url': 'http:\/\/maps.apple.com\/maps?q=' + locLat + ',' + locLong + '&z=16',
+			      },
+			    },
+			  },
+			},
+});
+    	// bot.reply(message, `It was: ${response.data.hits}`)
   	}).catch(error => {
-			bot.reply(message, 'Something went wrong! I was unable to find the closest location. Im sorry!')
+			                                                                                                                        bot.reply(message, 'Something went wrong! I was unable to find the closest location. Im sorry!');
   });
 }
 
@@ -98,42 +101,42 @@ controller.hears(['hello', 'hi', 'hey'], 'message_received', (bot, message) => {
 });
 
 controller.hears(['financial aid'], 'message_received', (bot, message) => {
-	if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.financial_aid_query && message.intents[0].entities.financial_aid_query[0].confidence > 0.6) {
-		let intent;
-		if (message.intents[0].entities.financial_aid_query[0].value === 'generic') {
-			intent = 'gen_fin_aid'
-		}
-		else if (message.intents[0].entities.financial_aid_query[0].value === 'student_count') {
-			intent = 'count_fin_aid'
-		}
-		else {
-			bot.reply(message, 'Dartmouth takes pride in its great financial aid. Would you like to learn about it? Say something like \'Can you tell about financial aid at Dartmouth?\' or ask something like \'How many students at Dartmouth recieve financial aid?\'')
-			return;
-		}
-		const fields = { intent }
-		axios.put(`${ROOT_URL}/intent`, fields)
-	  	.then(response => {
-				bot.reply(message, {
-					"text" : response.data.response,
-					"attachment": {
-	            "type": "template",
-	            "payload": {
-	                "template_type": "generic",
-	                "elements": {
-	                    "element": {
-	                        "title": 'Financial Aid',
-	                        "image_url": "http://diplomaclassics.com/images/Entities/campus_photo/v2/DartBakerLibrary222435_original.png",
-	                        "item_url": "http://admissions.dartmouth.edu/financial-aid/"
-	                    }
-	                }
-	            }
-	        }
-	    	});
-	  	}).catch(error => {
-				bot.reply(message, 'Didnt find it!')
-	  });
-  }
-})
+    if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.financial_aid_query && message.intents[0].entities.financial_aid_query[0].confidence > 0.6) {
+      let intent;
+      if (message.intents[0].entities.financial_aid_query[0].value === 'generic') {
+        intent = 'gen_fin_aid';
+			}
+	    else if (message.intents[0].entities.financial_aid_query[0].value === 'student_count') {
+	      intent = 'count_fin_aid';
+			}
+			else {
+        bot.reply(message, 'Dartmouth takes pride in its great financial aid. Would you like to learn about it? Say something like \'Can you tell about financial aid at Dartmouth?\' or ask something like \'How many students at Dartmouth recieve financial aid?\'');
+        return;
+			}
+      const fields = { intent };
+      axios.put(`${ROOT_URL}/intent`, fields)
+	  		.then(response => {
+          bot.reply(message, {
+	          // 'text': response.data.response,
+	          'attachment': {
+	              'type': 'template',
+	              'payload': {
+	                  'template_type': 'generic',
+	                  'elements': {
+	                      'element': {
+	                          'title': 'Financial Aid',
+	                          'image_url': 'http://diplomaclassics.com/images/Entities/campus_photo/v2/DartBakerLibrary222435_original.png',
+	                          'item_url': 'http://admissions.dartmouth.edu/financial-aid/',
+		                    },
+		                },
+		            },
+		        	},
+	    			});
+	  			}).catch(error => {
+				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
+	  			});
+				}
+});
 
 controller.hears(['where is', 'where', 'find'], 'message_received', (bot, message) => {
 
@@ -254,16 +257,16 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
 });
 
 controller.hears(['update menu'], 'message_received', (bot, message) => {
-	const menuFields = {
-	  "setting_type" : "call_to_actions",
-	  "thread_state" : "existing_thread",
-	  "call_to_actions":[
-	    {
-	      "type":"web_url",
-	      "title":"View Website",
-	      "url":"http://google.com/"
-	    }
-	  ]
-	}
-	axios.post(`https://graph.facebook.com/v2.6/me/thread_settings?access_token=${process.env.FB_BOT_ACCESS_TOKEN}`, menuFields)
+    const menuFields = {
+    'setting_type': 'call_to_actions',
+    'thread_state': 'existing_thread',
+    'call_to_actions': [
+        {
+          'type': 'web_url',
+          'title': 'View Website',
+          'url': 'http://google.com/',
+        },
+			],
+		};
+    axios.post(`https://graph.facebook.com/v2.6/me/thread_settings?access_token=${process.env.FB_BOT_ACCESS_TOKEN}`, menuFields);
 });
