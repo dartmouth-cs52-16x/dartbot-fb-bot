@@ -113,7 +113,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
         bot.reply(message, 'Dartmouth takes pride in its great financial aid. Would you like to learn about it? Say something like \'Can you tell about financial aid at Dartmouth?\' or ask something like \'How many students at Dartmouth recieve financial aid?\'');
         return;
 			}
-      const fields = { intent: intent };
+      const fields = { query: intent };
 			console.log("intent is: " + intent)
       axios.put(`${ROOT_URL}/intent`, fields)
 	  		.then(response => {
