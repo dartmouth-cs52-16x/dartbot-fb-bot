@@ -84,7 +84,7 @@ function returnNearestLocation(bot, message, coordinates) {
       //           }
       //       }
       //   }
-			bot.reply(message, 'found')
+			bot.reply(message, 'found:')
     	//});
     	//bot.reply(message, `It was: ${response.data.hits}`)
   	}).catch(error => {
