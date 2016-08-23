@@ -113,7 +113,6 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
 		const fields = { intent }
 		axios.put(`${ROOT_URL}/intent`, fields)
 	  	.then(response => {
-				if (response.data.response)
 				bot.reply(message, {
 					"text" : response.data.response,
 					"attachment": {
