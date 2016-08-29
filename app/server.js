@@ -76,6 +76,8 @@ function returnNearestLocation(bot, message, coordinates) {
           bot.reply(message, locContent.substr(0, 320));
           locContent = locContent.substr(320);
         }
+      } else {
+        bot.reply(message, locContent);
       }
 	    bot.reply(message, {
 	      'attachment': {
