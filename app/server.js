@@ -43,7 +43,7 @@ controller.on('message_received', (bot, message) => {
     if (message.attachments[0].payload.coordinates) {
       console.log("long" + message.attachments[0].payload.coordinates.long);
 			/* eslint-disable */
-			returnNearestLocation(bot, message, message.attachments[0].payload.coordinates.long);
+			returnNearestLocation(bot, message, message.attachments[0].payload.coordinates);
 			/* eslint-enable */
     }
   }
