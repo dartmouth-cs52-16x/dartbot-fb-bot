@@ -74,7 +74,7 @@ function returnNearestLocation(bot, message, coordinates) {
       if(locContent.length > 320) {
         while (locContent) {
           bot.reply(message, locContent.substr(0, 320));
-          locContent = content.substr(320);
+          locContent = locContent.substr(320);
         }
       }
 	    bot.reply(message, {
