@@ -15,14 +15,16 @@ This repo stores JavaScript for our Facebook Messenger bot created using botkit.
 
 Facebook requires a webhook for all communication; the bot server must therefore be running in an environment that can be accessed from the web. We chose to simply redeploy to heroku with every change; this was certainly not the best design decision, and looking back is something we would have done differently. However, to "run" the bot you must simply make any changes you wish and then push to heroku. It is always running therefore and can be messages on Facebook. No webhook is required to wake sleeping dynos, since everything is done through webhooks.
 
-TODO: how to get the project dev environment up and running, npm install etc
 
 ## Deployment
 
+Server is deployed on Heroku. No persistent storage is set up because all data is sent to the seperate backend where it is stored. 
 Currently plan to deploy the server on heroku with a free mongodb.
 
 ## Authors
 
-TODO: list of authors
+Robin, Alma, Ian, Ahsan, Larissa
 
 ## Acknowledgments
+
+Wit.ai, howdyai/Botkit on github
