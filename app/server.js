@@ -13,7 +13,6 @@ const ROOT_URL = 'http://dartmouthbot.herokuapp.com/api';
 // in older js this would be: var botkit = require('botkit')
 
 dotenv.config({ silent: true });
-console.log('starting bot');
 
 const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
@@ -33,10 +32,8 @@ controller.middleware.receive.use(wit.receive);
 const fbbot = controller.spawn({
 });
 
-console.log(process.env.PORT);
 controller.setupWebserver(process.env.PORT || 3000, (err, webserver) => {
   controller.createWebhookEndpoints(webserver, fbbot, () => {
-    console.log('HI!');
   });
 });
 
@@ -44,7 +41,7 @@ controller.on('message_received', (bot, message) => {
   console.log(message);
   if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
     if (message.attachments[0].payload.coordinates) {
-      console.log(message.attachments[0].payload.coordinates.long);
+      console.log("long" + message.attachments[0].payload.coordinates.long);
 			/* eslint-disable */
 			returnNearestLocation(bot, message, message.attachments[0].payload.coordinates.long);
 			/* eslint-enable */
@@ -67,7 +64,8 @@ controller.on('message_received', (bot, message) => {
 /* eslint-disable */
 
 function returnNearestLocation(bot, message, coordinates) {
-  bot.reply(message, 'Beep boop. Finding your nearest tour location...');
+
+  //bot.reply(message, 'Beep boop. Finding your nearest tour location...');
 	const fields = { lat: coordinates.lat, long: coordinates.long };
 	axios.put(`${ROOT_URL}/data/closest`, fields)
 		.then(response => {
