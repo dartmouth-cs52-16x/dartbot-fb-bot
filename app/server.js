@@ -156,8 +156,8 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
   const surveys = APICalls.getSurveys();
   console.log("survey" + surveys);
   if(true) {
-    const randSurvey = surveys[Math.random() * surveys.length];
-    console.log("survey" + randSurvey);
+  //  const randSurvey = surveys[Math.random() * surveys.length];
+//    console.log("survey" + randSurvey);
 //    console.log({question: tourRatingText, response: 1});
     function askFirstQuestion(resp, conv) {
   		const tourRatingText = 'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
