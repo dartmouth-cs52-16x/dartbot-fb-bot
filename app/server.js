@@ -70,14 +70,13 @@ function returnNearestLocation(bot, message, coordinates) {
 		.then(response => {
 	    const locLat = response.data.gps.lat;
 	    const locLong = response.data.gps.long;
-      if(response.data.content.length > 320) {
+  /*    if(response.data.content.length > 320) {
         let content = resposne.data.content;
         while (content) {
           bot.reply(message, content.substr(0, 320));
           content = content.substr(320);
         }
-      }
-
+      }*/
 	    bot.reply(message, {
 	      'attachment': {
 			  'type': 'template',
