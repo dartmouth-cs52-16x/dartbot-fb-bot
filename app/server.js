@@ -73,8 +73,8 @@ function returnNearestLocation(bot, message, coordinates) {
       let locContent = response.data.content;
       if(locContent.length > 320) {
         while (locContent) {
-          bot.reply(message, content.substr(0, 320));
-          content = content.substr(320);
+          bot.reply(message, locContent.substr(0, 320));
+          locContent = content.substr(320);
         }
       }
 	    bot.reply(message, {
