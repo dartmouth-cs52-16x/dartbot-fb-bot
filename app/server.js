@@ -88,6 +88,7 @@ function returnNearestLocation(bot, message, coordinates) {
 			  },
 			},
 });
+      bot.reply(message, response.data.content);
     	// bot.reply(message, `It was: ${response.data.hits}`)
   	}).catch(error => {
 			                                                                                                                        bot.reply(message, 'Something went wrong! I was unable to find the closest location. Im sorry!');
