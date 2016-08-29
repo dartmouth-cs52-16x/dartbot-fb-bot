@@ -160,14 +160,14 @@ controller.hears(['tour'], 'message_received', (bot, message) => {
     console.log(error);
     surveys = [];
   });
-  console.log("survey" + surveys);
+  console.log("surveys" + surveys);
   while(!surveys);
   if(surveys.length != 0) {
     const randSurvey = surveys[Math.random() * surveys.length];
-    console.log("survey" + randSurvey);
-    console.log({question: tourRatingText, response: 1});
+    console.log("randsurvey" + randSurvey);
+  //  console.log({question: tourRatingText, response: 1});
     function askFirstQuestion(resp, conv) {
-  		const tourRatingText = 'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
+  		const tourRatingText = randSurvey;//'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
       const tourRatingMessage = {
         'text': tourRatingText,
         'quick_replies': [
