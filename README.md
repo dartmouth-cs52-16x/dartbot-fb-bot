@@ -1,6 +1,6 @@
 # DartBot-Tour Guide
 
-API for DartBot - The Virtual Tour Guide Bot
+Fb Bot for DartBot - The Virtual Tour Guide Bot
 DartBot (Tour Guide) provides prospective students with a tour of Dartmouth by (1) providing information about various locations across campus and directions to the next stop of the tour and (2) answering questions they may have using a Facebook Messenger ChatBot.
 
 This repo contains the code for the Facebook Messenger Bot portion of the project.
@@ -12,6 +12,8 @@ This repo stores JavaScript for our Facebook Messenger bot created using botkit.
 
 
 ## Setup
+
+Facebook requires a webhook for all communication; the bot server must therefore be running in an environment that can be accessed from the web. We chose to simply redeploy to heroku with every change; this was certainly not the best design decision, and looking back is something we would have done differently. However, to "run" the bot you must simply make any changes you wish and then push to heroku. It is always running therefore and can be messages on Facebook. No webhook is required to wake sleeping dynos, since everything is done through webhooks.
 
 TODO: how to get the project dev environment up and running, npm install etc
 
