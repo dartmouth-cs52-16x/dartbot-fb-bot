@@ -41,7 +41,6 @@ controller.on('message_received', (bot, message) => {
   console.log(message);
   if (message.attachments && message.attachments[0] && message.attachments[0].payload) {
     if (message.attachments[0].payload.coordinates) {
-      console.log("long" + message.attachments[0].payload.coordinates.long);
 			/* eslint-disable */
 			returnNearestLocation(bot, message, message.attachments[0].payload.coordinates);
 			/* eslint-enable */
@@ -65,7 +64,8 @@ controller.on('message_received', (bot, message) => {
 
 function returnNearestLocation(bot, message, coordinates) {
 
-  //bot.reply(message, 'Beep boop. Finding your nearest tour location...');
+  bot.reply(message, 'Beep boop. Finding your nearest tour location...');
+  console.(coordinates);
 	const fields = { lat: coordinates.lat, long: coordinates.long };
 	axios.put(`${ROOT_URL}/data/closest`, fields)
 		.then(response => {
