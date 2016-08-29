@@ -141,99 +141,95 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
 	    			});
 						bot.reply(message, response.data.response)
 
-	  			}).catch(error => {
-				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
-	  			});
-			}
-});
-
-controller.hears(['where is', 'where', 'find'], 'message_received', (bot, message) => {
-
-});
-
-
-controller.hears(['tour'], 'message_received', (bot, message) => {
-  let surveys = null;
-  axios.get(`${ROOT_URL}/survey`).then(response => {
-    surveys = response.data;
-  }).catch(error =>{
-    console.log(error);
-    surveys = [];
+  	  			}).catch(error => {
+  				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
+  	  			});
+  			}
   });
-  console.log("surveys" + surveys);
-  while(!surveys);
-  if(surveys.length != 0) {
-    const randSurvey = surveys[Math.random() * surveys.length];
-    console.log("randsurvey" + randSurvey);
-  //  console.log({question: tourRatingText, response: 1});
+
+  controller.hears(['where is', 'where', 'find'], 'message_received', (bot, message) => {
+
+  });
+
+
+  controller.hears(['tour'], 'message_received', (bot, message) => {
     function askFirstQuestion(resp, conv) {
-  		const tourRatingText = randSurvey;//'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
-      const tourRatingMessage = {
-        'text': tourRatingText,
-        'quick_replies': [
-          {
-            'content_type': 'text',
-            'title': '1',
-            'payload': '1_SCORE',
-          },
-          {
-            'content_type': 'text',
-            'title': '2',
-            'payload': '2_SCORE',
-          },
-          {
-            'content_type': 'text',
-            'title': '3',
-            'payload': '3_SCORE',
-          },
-          {
-            'content_type': 'text',
-            'title': '4',
-            'payload': '4_SCORE',
-          },
-          {
-            'content_type': 'text',
-            'title': '5',
-            'payload': '5_SCORE',
-          },
-        ],
-      };
+      axios.get(`${ROOT_URL}/survey`).then(response => {
+        const surveys = response.data;
+        console.log("surveys" + surveys);
+        if(surveys.length != 0) {
+          const randSurvey = surveys[Math.random() * surveys.length];
+          console.log("randsurvey" + randSurvey);
+          //  console.log({question: tourRatingText, response: 1});
+      		const tourRatingText = randSurvey.question;//'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
+          const tourRatingMessage = {
+            'text': tourRatingText,
+            'quick_replies': [
+              {
+                'content_type': 'text',
+                'title': '1',
+                'payload': '1_SCORE',
+              },
+              {
+                'content_type': 'text',
+                'title': '2',
+                'payload': '2_SCORE',
+              },
+              {
+                'content_type': 'text',
+                'title': '3',
+                'payload': '3_SCORE',
+              },
+              {
+                'content_type': 'text',
+                'title': '4',
+                'payload': '4_SCORE',
+              },
+              {
+                'content_type': 'text',
+                'title': '5',
+                'payload': '5_SCORE',
+              },
+            ],
+          };
 
-      conv.ask(tourRatingMessage, (scoreResponse, convo) => {
-  			let response = 0;
-  			switch (scoreResponse.text) {
-          case '1':
-            // save to db
-  					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 1})
+          conv.ask(tourRatingMessage, (scoreResponse, convo) => {
+      			let response = 0;
+      			switch (scoreResponse.text) {
+              case '1':
+                // save to db
+      					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 1})
 
-            convo.next();
-            break;
-          case '2':
-            // save to db
-  					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 2})
-            convo.next();
-            break;
-          case '3':
-            // save to db
-  					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 3})
-            convo.next();
-            break;
-          case '4':
-            // save to db
-  					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 4})
-            convo.next();
-            break;
-          case '5':
-            // save to db
-  					axios.put(`${ROOT_URL}/data/closest`, {question: tourRatingText, response: 5})
-            convo.next();
-            break;
-          default:
-            convo.repeat();
-
-        }
-      });
-    }
+                convo.next();
+                break;
+              case '2':
+                // save to db
+      					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 2})
+                convo.next();
+                break;
+              case '3':
+                // save to db
+      					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 3})
+                convo.next();
+                break;
+              case '4':
+                // save to db
+      					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 4})
+                convo.next();
+                break;
+              case '5':
+                // save to db
+      					axios.put(`${ROOT_URL}/data/closest`, {question: tourRatingText, response: 5})
+                convo.next();
+                break;
+              default:
+                convo.repeat();
+              }
+            });
+          }
+    }).catch(error => {
+      console.log(error);
+    });
   }
   function confirmTour(response, convo) {
     const tourYesNoMessage = {
