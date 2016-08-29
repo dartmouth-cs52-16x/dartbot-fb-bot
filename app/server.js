@@ -70,9 +70,7 @@ function returnNearestLocation(bot, message, coordinates) {
 		.then(response => {
 	    const locLat = response.data.gps.lat;
 	    const locLong = response.data.gps.long;
-      console.log(response.data.content.length > 320);
-      let content = resposne.data.content;
-      console.log(content.substr(0, 320));
+      let locContent = response.data.content;
     /*  if(response.data.content.length > 320) {
         let content = resposne.data.content;
         while (content) {
@@ -97,7 +95,7 @@ function returnNearestLocation(bot, message, coordinates) {
 });
     	// bot.reply(message, `It was: ${response.data.hits}`)
   	}).catch(error => {
-			                                                                                                                        bot.reply(message, 'Something went wrong! I was unable to find the closest location. Im sorry!');
+      bot.reply(message, 'Something went wrong! I was unable to find the closest location. Im sorry!');
   });
 }
 
