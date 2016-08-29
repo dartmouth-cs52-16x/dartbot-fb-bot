@@ -2,12 +2,11 @@ import axios from 'axios';
 
 const ROOT_URL = 'http://dartmouthbot.herokuapp.com/api';
 
-export function getLocations() {
-  axios.get(`${ROOT_URL}/locs`)
-  .then(response => {
-    console.log(response);
-    return response.data;
+export function getSurveys() {
+  axios.get(`${ROOT_URL}/survey`).then(response => {
+    return (response.data);
   }).catch(error => {
     console.log(error);
+    return [];
   });
 }

@@ -2,6 +2,7 @@ import botkit from 'botkit';
 import dotenv from 'dotenv';
 // import { getLocations } from './api';
 import axios from 'axios';
+import * as APICalls from './api';
 
 const ROOT_URL = 'http://dartmouthbot.herokuapp.com/api';
 
@@ -73,9 +74,8 @@ function returnNearestLocation(bot, message, coordinates) {
       let locContent = response.data.content;
       if(locContent.length > 320) {
         while (locContent) {
-          bot.reply(message, locContent.substr(0, 320)).then(() => {
-            locContent = locContent.substr(320);
-          });
+          bot.reply(message, locContent.substr(0, 320));
+          locContent = locContent.substr(320);
         }
       } else {
         bot.reply(message, locContent);
@@ -153,73 +153,77 @@ controller.hears(['where is', 'where', 'find'], 'message_received', (bot, messag
 
 
 controller.hears(['tour'], 'message_received', (bot, message) => {
-  function askFirstQuestion(resp, conv) {
-		const tourRatingText = 'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
-    const tourRatingMessage = {
-      'text': tourRatingText,
-      'quick_replies': [
-        {
-          'content_type': 'text',
-          'title': '1',
-          'payload': '1_SCORE',
-        },
-        {
-          'content_type': 'text',
-          'title': '2',
-          'payload': '2_SCORE',
-        },
-        {
-          'content_type': 'text',
-          'title': '3',
-          'payload': '3_SCORE',
-        },
-        {
-          'content_type': 'text',
-          'title': '4',
-          'payload': '4_SCORE',
-        },
-        {
-          'content_type': 'text',
-          'title': '5',
-          'payload': '5_SCORE',
-        },
-      ],
-    };
+  const surveys = APICalls.getSurveys();
+  if(surveys.length != 0) {
+    const randSurvey = surveys[Math.random() * surveys.length];
+    function askFirstQuestion(resp, conv) {
+  		const tourRatingText = randSurvey.question;//'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
+      const tourRatingMessage = {
+        'text': tourRatingText,
+        'quick_replies': [
+          {
+            'content_type': 'text',
+            'title': '1',
+            'payload': '1_SCORE',
+          },
+          {
+            'content_type': 'text',
+            'title': '2',
+            'payload': '2_SCORE',
+          },
+          {
+            'content_type': 'text',
+            'title': '3',
+            'payload': '3_SCORE',
+          },
+          {
+            'content_type': 'text',
+            'title': '4',
+            'payload': '4_SCORE',
+          },
+          {
+            'content_type': 'text',
+            'title': '5',
+            'payload': '5_SCORE',
+          },
+        ],
+      };
 
-    conv.ask(tourRatingMessage, (scoreResponse, convo) => {
-			let response = 0;
-			switch (scoreResponse.text) {
-        case '1':
-          // save to db
-					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 1})
+      conv.ask(tourRatingMessage, (scoreResponse, convo) => {
+  			let response = 0;
+  			switch (scoreResponse.text) {
+          case '1':
+            // save to db
+  					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 1})
 
-          convo.next();
-          break;
-        case '2':
-          // save to db
-					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 2})
-          convo.next();
-          break;
-        case '3':
-          // save to db
-					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 3})
-          convo.next();
-          break;
-        case '4':
-          // save to db
-					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 4})
-          convo.next();
-          break;
-        case '5':
-          // save to db
-					axios.put(`${ROOT_URL}/data/closest`, {question: tourRatingText, response: 5})
-          convo.next();
-          break;
-        default:
-          convo.repeat();
+            convo.next();
+            break;
+          case '2':
+            // save to db
+  					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 2})
+            convo.next();
+            break;
+          case '3':
+            // save to db
+  					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 3})
+            convo.next();
+            break;
+          case '4':
+            // save to db
+  					axios.put(`${ROOT_URL}/survey`, {question: tourRatingText, response: 4})
+            convo.next();
+            break;
+          case '5':
+            // save to db
+  					axios.put(`${ROOT_URL}/data/closest`, {question: tourRatingText, response: 5})
+            convo.next();
+            break;
+          default:
+            convo.repeat();
 
-      }
-    });
+        }
+      });
+    }
   }
   function confirmTour(response, convo) {
     const tourYesNoMessage = {
