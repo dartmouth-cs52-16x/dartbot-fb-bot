@@ -248,29 +248,32 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
       ],
     };
 
-    convo.ask(tourYesNoMessage, [
-      {
-        pattern: bot.utterances.yes,
-        callback(resp, conv) {
-          askFirstQuestion(resp, conv);
-          convo.next();
+    bot.startConversation(message,function(err,convo) {
+
+      convo.ask(tourYesNoMessage, [
+        {
+          pattern: bot.utterances.yes,
+          callback(resp, conv) {
+            askFirstQuestion(resp, conv);
+            convo.next();
+          },
         },
-      },
-      {
-        pattern: bot.utterances.no,
-        callback(resp, conv) {
-          convo.say('That\'s okay! Enjoy your time at Dartmouth, and ask me any questions you have!');
-          convo.next();
+        {
+          pattern: bot.utterances.no,
+          callback(resp, conv) {
+            convo.say('That\'s okay! Enjoy your time at Dartmouth, and ask me any questions you have!');
+            convo.next();
+          },
         },
-      },
-      {
-        default: true,
-        callback(resp, conv) {
-          convo.say('I think that\'s a no? No worries, enjoy your time at Dartmouth, and ask me any questions you have!');
-          convo.next();
+        {
+          default: true,
+          callback(resp, conv) {
+            convo.say('I think that\'s a no? No worries, enjoy your time at Dartmouth, and ask me any questions you have!');
+            convo.next();
+          },
         },
-      },
-    ]);
+      ]);
+    });
   }
   // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
   if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
