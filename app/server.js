@@ -158,7 +158,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
         const surveys = response.data;
         console.log("surveys" + surveys);
         if(surveys.length != 0) {
-          const randSurvey = surveys[Math.random(surveys.length).floor()];
+          const randSurvey = surveys[Math.floor(Math.random() * surveys.length)];
           console.log("randsurvey" + randSurvey);
           //  console.log({question: tourRatingText, response: 1});
       		const tourRatingText = randSurvey.question;//'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
