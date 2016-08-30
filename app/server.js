@@ -158,7 +158,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
         const surveys = response.data;
         console.log("surveys" + surveys);
         if(surveys.length != 0) {
-          const randSurvey = surveys[Math.random() * surveys.length];
+          const randSurvey = surveys[Math.random(surveys.length).floor()];
           console.log("randsurvey" + randSurvey);
           //  console.log({question: tourRatingText, response: 1});
       		const tourRatingText = randSurvey.question;//'On a scale from 1 to 5, how did the tour help improve your understanding of Dartmouth?'
@@ -247,38 +247,38 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
         },
       ],
     };
-
-    bot.startConversation(message,function(err,convo) {
-
-      convo.ask(tourYesNoMessage, [
-        {
-          pattern: bot.utterances.yes,
-          callback(resp, conv) {
-            askFirstQuestion(resp, conv);
-            convo.next();
-          },
-        },
-        {
-          pattern: bot.utterances.no,
-          callback(resp, conv) {
-            convo.say('That\'s okay! Enjoy your time at Dartmouth, and ask me any questions you have!');
-            convo.next();
-          },
-        },
-        {
-          default: true,
-          callback(resp, conv) {
-            convo.say('I think that\'s a no? No worries, enjoy your time at Dartmouth, and ask me any questions you have!');
-            convo.next();
-          },
-        },
-      ]);
-    });
   }
-  // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
+
+  bot.startConversation(message,function(err,convo) {
+
+    convo.ask(tourYesNoMessage, [
+      {
+        pattern: bot.utterances.yes,
+        callback(resp, conv) {
+          askFirstQuestion(resp, conv);
+          convo.next();
+        },
+      },
+      {
+        pattern: bot.utterances.no,
+        callback(resp, conv) {
+          convo.say('That\'s okay! Enjoy your time at Dartmouth, and ask me any questions you have!');
+          convo.next();
+        },
+      },
+      {
+        default: true,
+        callback(resp, conv) {
+          convo.say('I think that\'s a no? No worries, enjoy your time at Dartmouth, and ask me any questions you have!');
+          convo.next();
+        },
+      },
+    ]);
+  });
+/*  // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
   if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
-  }
+  }*/
 });
 
 controller.hears(['update menu'], 'message_received', (bot, message) => {
