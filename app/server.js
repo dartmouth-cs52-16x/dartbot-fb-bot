@@ -279,6 +279,18 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
   			}
   });
 
+axios.get(`${ROOT_URL}/intent/data`).then(response => {
+  response.data.map(intent => {
+    controller.hears( intent.query, 'message_received', (bot, message) => {
+      axios.put(`${ROOT_URL}/intent`, {query: intent.query}).then(response => {
+        bot.reply(message, response.data.response);
+      });
+    });
+  });
+});
+
+
+
 controller.hears(['update menu'], 'message_received', (bot, message) => {
     const menuFields = {
     'setting_type': 'call_to_actions',
@@ -292,14 +304,4 @@ controller.hears(['update menu'], 'message_received', (bot, message) => {
 			],
 		};
     axios.post(`https://graph.facebook.com/v2.6/me/thread_settings?access_token=${process.env.FB_BOT_ACCESS_TOKEN}`, menuFields);
-});
-
-axios.get(`${ROOT_URL}/intent/data`).then(response => {
-  response.data.map(intent => {
-    controller.hears( intent.query, 'message_received', (bot, message) => {
-      axios.put(`${ROOT_URL}/intent`, {query: intent.query}).then(response => {
-        bot.reply(message, response.data.response);
-      });
-    });
-  });
 });
