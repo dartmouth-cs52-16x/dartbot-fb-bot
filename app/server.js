@@ -247,10 +247,6 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
         },
       ],
     };
-  }
-
-  bot.startConversation(message,function(err,convo) {
-
     convo.ask(tourYesNoMessage, [
       {
         pattern: bot.utterances.yes,
@@ -274,7 +270,8 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
         },
       },
     ]);
-  });
+  };
+  bot.startConversation(message, confirmTour);
 /*  // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
   if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
