@@ -18,8 +18,27 @@ Facebook requires a webhook for all communication; the bot server must therefore
 
 ## Deployment
 
-Server is deployed on Heroku. No persistent storage is set up because all data is sent to the seperate backend where it is stored. 
+The server is deployed on Heroku. No persistent storage is set up because all data is sent to the separate backend where it is stored.
 Currently plan to deploy the server on heroku with a free mongodb.
+
+## Usage
+
+### Location Based Responses
+Through Facebook Messenger's mobile interface a user is able to send their location to DartBot.
+DartBot then returns information about the closest tour landmark. The bot also handles sending responses that are above Facebook's character limit.
+
+![findLoc](/imgs/findloc.png)
+
+### Responding to Inquiries
+Using botkit's "hears" method, we have the bot listen to certain key words and respond with an answer provide by the admin.
+
+![query](/imgs/question.png)
+
+### Prompting users for feedback
+When the user says the secret key work "tour", the bot prompts the user to answer a feedback question about the tour, that the admin is able to provide on the admin-side of the site.
+The bot randomly selects a survey question from the backend and then receives the response from the user. The response is recorded and sent to the backend for analytics for the admin.
+
+![feedback](/imgs/Feedback.png)
 
 ## Authors
 

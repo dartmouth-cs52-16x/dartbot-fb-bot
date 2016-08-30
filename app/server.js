@@ -64,7 +64,6 @@ controller.on('message_received', (bot, message) => {
 /* eslint-disable */
 
 function returnNearestLocation(bot, message, coordinates) {
-
   bot.reply(message, 'Beep boop. Finding your nearest tour location...');
 	const fields = { lat: coordinates.lat, lon: coordinates.long };
 	axios.put(`${ROOT_URL}/data/closest`, fields)
@@ -107,51 +106,8 @@ controller.hears(['hello', 'hi', 'hey'], 'message_received', (bot, message) => {
   bot.reply(message, 'Hey there!');
 });
 
-controller.hears(['financial aid'], 'message_received', (bot, message) => {
-    if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.financial_aid_query && message.intents[0].entities.financial_aid_query[0].confidence > 0.6) {
-      let intent;
-      if (message.intents[0].entities.financial_aid_query[0].value === 'generic') {
-        intent = 'gen_fin_aid';
-			}
-	    else if (message.intents[0].entities.financial_aid_query[0].value === 'student_count') {
-	      intent = 'count_fin_aid';
-			}
-			else {
-        bot.reply(message, 'Dartmouth takes pride in its great financial aid. Would you like to learn about it? Say something like \'Can you tell about financial aid at Dartmouth?\' or ask something like \'How many students at Dartmouth recieve financial aid?\'');
-        return;
-			}
-      const fields = { query: intent };
-			console.log("intent is: " + intent)
-      axios.put(`${ROOT_URL}/intent`, fields)
-	  		.then(response => {
-          bot.reply(message, {
-	          'attachment': {
-	              'type': 'template',
-	              'payload': {
-	                  'template_type': 'generic',
-	                  'elements': {
-	                      'element': {
-	                          'title': 'Financial Aid',
-	                          'image_url': 'http:\/\/diplomaclassics.com\/images\/Entities\/campus_photo\/v2\/DartBakerLibrary222435_original.png',
-	                          'item_url': 'http:\/\/admissions.dartmouth.edu\/financial-aid\/',
-		                    },
-		                },
-		            },
-		        	},
-	    			});
-						bot.reply(message, response.data.response)
 
-  	  			}).catch(error => {
-  				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
-  	  			});
-  			}
-  });
-
-  controller.hears(['where is', 'where', 'find'], 'message_received', (bot, message) => {
-
-  });
-
-
+// When hearing "tour" the bot will prompt the user for feedback from a set of random surveys.
   controller.hears(['tour'], 'message_received', (bot, message) => {
     function askFirstQuestion(resp, conv) {
       axios.get(`${ROOT_URL}/survey`).then(response => {
@@ -225,6 +181,7 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
               default:
                 convo.repeat();
               }
+              bot.reply(message, "Thanks!");
             });
           }
     }).catch(error => {
@@ -271,12 +228,56 @@ controller.hears(['financial aid'], 'message_received', (bot, message) => {
       },
     ]);
   };
+
+
   bot.startConversation(message, confirmTour);
+
 /*  // check if this sentence with tour in it is above our Wit.ai ML algorithm's 65% confidence threshhold for being related to finishing the tour
   if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.tour_prompt && message.intents[0].entities.tour_prompt[0].confidence > 0.6) {
     bot.startConversation(message, confirmTour);
   }*/
 });
+
+controller.hears(['financial aid'], 'message_received', (bot, message) => {
+    if (message.intents.length > 0 && message.intents[0].entities && message.intents[0].entities.financial_aid_query && message.intents[0].entities.financial_aid_query[0].confidence > 0.6) {
+      let intent;
+      if (message.intents[0].entities.financial_aid_query[0].value === 'generic') {
+        intent = 'gen_fin_aid';
+			}
+	    else if (message.intents[0].entities.financial_aid_query[0].value === 'student_count') {
+	      intent = 'count_fin_aid';
+			}
+		//	else {
+      //  bot.reply(message, 'Dartmouth takes pride in its great financial aid. Would you like to learn about it? Say something like \'Can you tell about financial aid at Dartmouth?\' or ask something like \'How many students at Dartmouth recieve financial aid?\'');
+    //    return;
+		//	}
+      const fields = { query: intent };
+			console.log("intent is: " + intent)
+      axios.put(`${ROOT_URL}/intent`, fields)
+	  		.then(response => {
+          bot.reply(message, {
+            'text': response.data.response,
+	          'attachment': {
+	              'type': 'template',
+	              'payload': {
+	                  'template_type': 'generic',
+	                  'elements': {
+	                      'element': {
+	                          'title': 'Financial Aid',
+	                          'image_url': 'http:\/\/diplomaclassics.com\/images\/Entities\/campus_photo\/v2\/DartBakerLibrary222435_original.png',
+	                          'item_url': 'http:\/\/admissions.dartmouth.edu\/financial-aid\/',
+		                    },
+		                },
+		            },
+		        	},
+	    			});
+						bot.reply(message, response.data.response)
+
+  	  			}).catch(error => {
+  				  	bot.reply(message, 'Something went wrong, I can\'t tell you about financial aid right now!');
+  	  			});
+  			}
+  });
 
 controller.hears(['update menu'], 'message_received', (bot, message) => {
     const menuFields = {
@@ -291,4 +292,14 @@ controller.hears(['update menu'], 'message_received', (bot, message) => {
 			],
 		};
     axios.post(`https://graph.facebook.com/v2.6/me/thread_settings?access_token=${process.env.FB_BOT_ACCESS_TOKEN}`, menuFields);
+});
+
+axios.get(`${ROOT_URL}/intent/data`).then(response => {
+  response.data.map(intent => {
+    controller.hears( intent.query, 'message_received', (bot, message) => {
+      axios.put(`${ROOT_URL}/intent`, {query: intent.query}).then(response => {
+        bot.reply(message, response.data.response);
+      });
+    });
+  });
 });
