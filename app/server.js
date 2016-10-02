@@ -19,8 +19,6 @@ const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
 });
 
-const db = DB.setupMongo();
-
 
 // botkit controller
 const controller = botkit.facebookbot({
@@ -292,9 +290,8 @@ axios.get(`${ROOT_URL}/intent/data`).then(response => {
 });
 
 controller.hears(['dds'], 'message_received', (bot, message) => {
-  console.log(db);
-  //const dailies = DB.findDDSDailies(db);
-  //bot.reply(message, `DDS Specials for Today: \n ${dailies.foco}`);
+  const dailies = DB.setupMongo();
+  bot.reply(message, `DDS Specials for Today: \n ${dailies.foco}`);
 });
 
 
