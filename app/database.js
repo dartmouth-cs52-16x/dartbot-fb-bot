@@ -10,6 +10,7 @@ export function setupMongo() {
       return null;
     } else {
       console.log('Connected to server');
+      console.log(db);
       return db;
     }
   });

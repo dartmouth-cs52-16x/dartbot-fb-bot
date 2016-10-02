@@ -292,8 +292,9 @@ axios.get(`${ROOT_URL}/intent/data`).then(response => {
 });
 
 controller.hears(['dds'], 'message_received', (bot, message) => {
-  const dailies = DB.findDDSDailies(db);
-  bot.reply(message, `DDS Specials for Today: \n ${dailies.foco}`);
+  console.log(db);
+  //const dailies = DB.findDDSDailies(db);
+  //bot.reply(message, `DDS Specials for Today: \n ${dailies.foco}`);
 });
 
 
