@@ -2,7 +2,7 @@ import botkit from 'botkit';
 import dotenv from 'dotenv';
 // import { getLocations } from './api';
 import axios from 'axios';
-import * as APICalls from './api';
+import * as DB from './database';
 
 const ROOT_URL = 'http://dartmouthbot.herokuapp.com/api';
 
@@ -18,6 +18,8 @@ dotenv.config({ silent: true });
 const wit = require('botkit-middleware-witai')({
   token: process.env.WIT_AI_TOKEN,
 });
+
+const db = DB.setupMongo();
 
 
 // botkit controller
@@ -289,6 +291,10 @@ axios.get(`${ROOT_URL}/intent/data`).then(response => {
   });
 });
 
+controller.hears(['dds'], 'message_received', (bot, message) => {
+  const dailies = DB.findDDSDailies(db);
+  bot.reply(message, `DDS Specials for Today: \n ${dailies.foco}`);
+});
 
 
 controller.hears(['update menu'], 'message_received', (bot, message) => {
