@@ -290,8 +290,11 @@ axios.get(`${ROOT_URL}/intent/data`).then(response => {
 });
 
 controller.hears(['dds'], 'message_received', (bot, message) => {
-  DB.setupMongo((err, dailies) => {
-    bot.reply(message, `DDS Specials for Today: \n ${dailies.foco}`);
+  DB.findDDSDailies((err, dailies) => {
+    bot.reply(message, `${dailies.day}:
+      \nFoco: ${dailies.foco}
+      \nCollis: ${dailies.collis}
+      \nHop: ${dailies.hop}`);
   });
 });
 
