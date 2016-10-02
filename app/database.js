@@ -16,7 +16,10 @@ export function setupMongo() {
 }
 export function findDDSDailies(db) {
   const dailies = db.collection('ddsdailies');
-  dailies.findOne({}, (err, doc) => {
+  dailies.findOne({}).then((err, doc) => {
+    console.log(doc);
     return doc;
+  }).catch((err) => {
+    console.log(err);
   });
 }
