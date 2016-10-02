@@ -3,23 +3,18 @@ import { MongoClient } from 'mongodb';
 const URL = process.env.MONGODB_URI;
 
 
-export function setupMongo() {
+export function setupMongo(test) {
   MongoClient.connect(URL, (err, db) => {
     if (err) {
       console.log(err);
       return null;
     } else {
       console.log('Connected to server');
-      return findDDSDailies(db);
+      return findDDSDailies(db, test);
     }
   });
 }
-export function findDDSDailies(db) {
+export function findDDSDailies(db, test) {
   const dailies = db.collection('ddsdailies');
-  dailies.findOne({}).then((err, doc) => {
-    console.log(doc);
-    return doc;
-  }).catch((err) => {
-    console.log(err);
-  });
+  dailies.findOne({}, test);
 }
