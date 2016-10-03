@@ -298,6 +298,11 @@ controller.hears(['dds'], 'message_received', (bot, message) => {
   });
 });
 
+controller.hears('help', 'message_received', (bot, message)=> {
+  bot.reply(message, "Hi I'm DartBot and I can help you find out more about Dartmouth"
+    + "\nSend me your location on a mobile device and I'll tell you about the closed tour landmark"
+    + "\nMessage me dds and I'll tell you the DDS specials for the day");
+});
 
 controller.hears(['update menu'], 'message_received', (bot, message) => {
     const menuFields = {
@@ -312,4 +317,8 @@ controller.hears(['update menu'], 'message_received', (bot, message) => {
 			],
 		};
     axios.post(`https://graph.facebook.com/v2.6/me/thread_settings?access_token=${process.env.FB_BOT_ACCESS_TOKEN}`, menuFields);
+});
+
+controller.on('message_received', (bot, message) => {
+  bot.reply(message, "Sorry I don't know how to answer that!");
 });
