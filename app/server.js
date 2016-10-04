@@ -69,6 +69,7 @@ function handleCharacterLimit(bot, message, content) {
       bot.reply(message, content.substr(0, 320));
       content = content.substr(320);
     }
+  }
 }
 
 function returnNearestLocation(bot, message, coordinates) {
