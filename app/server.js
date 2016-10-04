@@ -63,6 +63,14 @@ controller.on('message_received', (bot, message) => {
 // });
 /* eslint-disable */
 
+function handleCharacterLimit(bot, message, content) {
+  if(content.length > 320) {
+    while (content) {
+      bot.reply(message, content.substr(0, 320));
+      content = content.substr(320);
+    }
+}
+
 function returnNearestLocation(bot, message, coordinates) {
   bot.reply(message, 'Beep boop. Finding your nearest tour location...');
 	const fields = { lat: coordinates.lat, lon: coordinates.long };
@@ -291,7 +299,7 @@ axios.get(`${ROOT_URL}/intent/data`).then(response => {
 
 controller.hears(['dds'], 'message_received', (bot, message) => {
   DB.findDDSDailies((err, dailies) => {
-    bot.reply(message, `${dailies.day}:
+    handleCharacterLimit(bot, message, `${dailies.day}:
       \nFoco: ${dailies.foco}
       \nCollis: ${dailies.collis}
       \nHop: ${dailies.hop}`);
