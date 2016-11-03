@@ -301,16 +301,14 @@ axios.get(`${ROOT_URL}/intent/data`).then(response => {
 });
 
 controller.hears(['dds'], 'message_received', (bot, message) => {
-  axios.post(`${ROOT_URL}/ddsdailies`).then(() => {
-    DB.findDDSDailies((err, dailies) => {
-      const text = handleCharacterLimit(`${dailies.day}:
-        \nFoco: ${dailies.foco}
-        \nCollis: ${dailies.collis}
-        \nHop: ${dailies.hop}`)
-      for(var i in text){
-          bot.reply(message, text[i]);
-        }
-    });
+  DB.findDDSDailies((err, dailies) => {
+    const text = handleCharacterLimit(`${dailies.day}:
+      \nFoco: ${dailies.foco}
+      \nCollis: ${dailies.collis}
+      \nHop: ${dailies.hop}`)
+    for(var i in text){
+        bot.reply(message, text[i]);
+      }
   });
 });
 
