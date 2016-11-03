@@ -63,13 +63,15 @@ controller.on('message_received', (bot, message) => {
 // });
 /* eslint-disable */
 
-function handleCharacterLimit(bot, message, content) {
-  if(content.length > 320) {
-    while (content) {
-      bot.reply(message, content.substr(0, 320));
-      content = content.substr(320);
-    }
+
+
+function handleCharacterLimit(content) {
+  var messages = [];
+  while (content.length != 0) {
+    messages.push(content.substr(0, 320));
+    content = content.substr(320);
   }
+  return messages;
 }
 
 function returnNearestLocation(bot, message, coordinates) {
@@ -299,11 +301,16 @@ axios.get(`${ROOT_URL}/intent/data`).then(response => {
 });
 
 controller.hears(['dds'], 'message_received', (bot, message) => {
-  DB.findDDSDailies((err, dailies) => {
-    handleCharacterLimit(bot, message, `${dailies.day}:
-      \nFoco: ${dailies.foco}
-      \nCollis: ${dailies.collis}
-      \nHop: ${dailies.hop}`);
+  axios.post(`${ROOT_URL}/ddsdailies`).then(() => {
+    DB.findDDSDailies((err, dailies) => {
+      const text = handleCharacterLimit(`${dailies.day}:
+        \nFoco: ${dailies.foco}
+        \nCollis: ${dailies.collis}
+        \nHop: ${dailies.hop}`)
+      for(var i in text){
+          bot.reply(message, text[i]);
+        }
+    });
   });
 });
 
